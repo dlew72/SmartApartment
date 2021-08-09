@@ -22,11 +22,11 @@ public class MainActivity extends AppCompatActivity {
         //Get shared preferences
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         if (sharedPref.getBoolean("isConnected", false)) {
-            //Go To Dashboard
+            //Go To Dashboard screen
 
         }
         else {
-            //Go To Setup
+            //Go To Setup screen
         }
     }
 }
