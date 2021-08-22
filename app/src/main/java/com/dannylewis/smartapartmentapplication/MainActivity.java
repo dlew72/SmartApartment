@@ -3,6 +3,7 @@ package com.dannylewis.smartapartmentapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -26,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else {
-            //Go To Setup screen
+            //Go To Search For Hub screen
+            Intent intent = new Intent(this, SearchForHubActivity.class);
+            startActivity(intent);
         }
     }
 }
