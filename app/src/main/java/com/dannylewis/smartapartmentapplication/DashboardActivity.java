@@ -40,9 +40,21 @@ public class DashboardActivity extends AppCompatActivity {
             readOut = (TextView) findViewById(R.id.dashReadoutXX);
         }
 
-        //Inititalize dynamic components on screen
-        initComponents();
+        //Initialize dynamic components on screen
+        {
+            //Light
+            //TODO: lights
+            lightOpac.setAlpha(0);
 
+            //Shade
+            //TODO: shade
+
+            //Readout
+            setLux(0);
+            //TODO: setInterval to check for new lux values and set them
+        }
+
+        //Add seekbar listeners
         brightSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChangedValue = 0;
 
@@ -72,7 +84,6 @@ public class DashboardActivity extends AppCompatActivity {
                 String rVal = "FF";
                 String gVal = Integer.toHexString((int)(255-(progressChangedValue*.6)));
                 String bVal = Integer.toHexString((int)(255-(progressChangedValue*1.28)));
-                Log.d("dannyDebug", rVal + gVal + bVal);
                 lightOpac.setBackgroundColor(Color.parseColor("#" + rVal + gVal + bVal));
             }
 
@@ -82,6 +93,22 @@ public class DashboardActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+
+        shadeSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChangedValue = 0;
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChangedValue = progress;
+                changeShadePosition(progressChangedValue);
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
 
     }
 
@@ -114,18 +141,6 @@ public class DashboardActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initComponents() {
-        //Light
-        //TODO: lights
-        lightOpac.setAlpha(0);
-
-        //Shade
-        //TODO: shade
-
-        //Readout
-        setLux(0);
-        //TODO: setInterval to check for new lux values and set them
-    }
 
     void setLux(int xx) {
         readOut.setText(xx + " lux");
@@ -136,6 +151,10 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     void changeWarmth(int newValue) {
+        //TODO: send newValue to arduino
+    }
+
+    void changeShadePosition(int newValue) {
         //TODO: send newValue to arduino
     }
 }

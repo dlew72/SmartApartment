@@ -9,9 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartApartmentApplication">
-        <activity android:name=".DashboardActivity" android:label="SmartHub Dashboard"></activity>
-        <activity android:name=".SmartHubConnectedActivity" android:label="SmartHub Setup"/>
-        <activity android:name=".SmartHubDetectedActivity" android:label="SmartHub Setup"/>
+        <activity
+            android:name=".NoHubFoundActivity"
+            android:label="No Connection"/>
+        <activity
+            android:name=".DashboardActivity"
+            android:label="SmartHub Dashboard" />
+        <activity
+            android:name=".SmartHubConnectedActivity"
+            android:label="SmartHub Setup" />
+        <activity
+            android:name=".SmartHubDetectedActivity"
+            android:label="SmartHub Setup" />
         <activity
             android:name=".SearchForHubActivity"
             android:label="SmartHub Setup" />
