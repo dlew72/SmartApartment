@@ -4,178 +4,199 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/design_default_color_primary_dark"
     tools:context=".DashboardActivity">
 
-
     <View
-        android:id="@+id/view"
+        android:id="@+id/dashLightTile"
         android:layout_width="355dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
         android:background="#03A9F4"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintBottom_toTopOf="@+id/splitLightWindow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/topMargin" />
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Brightness"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-    <SeekBar
-        android:id="@+id/seekBar3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-    <SeekBar
-        android:id="@+id/seekBar2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+    <View
+        android:id="@+id/dashLightOpac"
+        android:layout_width="82dp"
+        android:layout_height="86dp"
+        android:layout_marginStart="4dp"
+        android:background="#FFFFFF"
+        app:layout_constraintStart_toStartOf="@+id/dashLightImg"
+        app:layout_constraintTop_toTopOf="@+id/dashLightImg" />
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        app:srcCompat="@drawable/light_icon_foreground" />
+        android:id="@+id/dashLightImg"
+        android:layout_width="91dp"
+        android:layout_height="93dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
+        app:layout_constraintTop_toTopOf="@+id/dashLightTile"
+        app:srcCompat="@drawable/light_bulb" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/dashBrightText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
+        android:text="Brightness"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
+        app:layout_constraintTop_toBottomOf="@+id/dashLightImg" />
+
+    <SeekBar
+        android:id="@+id/dashBrightSeek"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
+        app:layout_constraintTop_toBottomOf="@+id/dashBrightText" />
+
+    <TextView
+        android:id="@+id/dashWarmText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:text="Warmth"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar3" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
+        app:layout_constraintTop_toBottomOf="@+id/dashBrightSeek" />
 
-    <View
-        android:id="@+id/view4"
+    <SeekBar
+        android:id="@+id/dashWarmSeek"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="#03A9F4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
+        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
+        app:layout_constraintTop_toBottomOf="@+id/dashWarmText" />
 
     <View
-        android:id="@+id/view3"
+        android:id="@+id/dashWinTile"
         android:layout_width="353dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:background="#03A9F4"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintBottom_toTopOf="@+id/splitWindowReadout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+        app:layout_constraintTop_toTopOf="@+id/splitLightWindow" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/dashWinImg"
         android:layout_width="181dp"
         android:layout_height="117dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toTopOf="@+id/view3"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/dashWinTile"
+        app:layout_constraintStart_toStartOf="@+id/dashWinTile"
+        app:layout_constraintTop_toTopOf="@+id/dashWinTile"
         app:srcCompat="@drawable/window_shade_icon" />
 
+    <TextView
+        android:id="@+id/dashWinText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Shade Position"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/dashWinTile"
+        app:layout_constraintStart_toStartOf="@+id/dashWinTile"
+        app:layout_constraintTop_toBottomOf="@+id/dashWinImg" />
+
     <SeekBar
-        android:id="@+id/seekBar5"
+        android:id="@+id/dashWinSeek"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/dashWinTile"
+        app:layout_constraintStart_toStartOf="@+id/dashWinTile"
+        app:layout_constraintTop_toBottomOf="@+id/dashWinText" />
+
+    <View
+        android:id="@+id/dashReadoutTile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        android:layout_marginBottom="16dp"
+        android:background="#03A9F4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dashWinTile" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/dashReadoutStr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Shade Position"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintStart_toStartOf="@+id/view3"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="4dp"
         android:text="Current brightness in room:"
-        app:layout_constraintBottom_toBottomOf="@+id/view4"
-        app:layout_constraintStart_toStartOf="@+id/view4"
-        app:layout_constraintTop_toTopOf="@+id/view4" />
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/dashReadoutTile" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/dashReadoutXX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="xx Lux"
         android:textColor="#FFFFFF"
+        android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/view4"
-        app:layout_constraintStart_toEndOf="@+id/textView15"
-        app:layout_constraintTop_toTopOf="@+id/view4" />
+        app:layout_constraintEnd_toEndOf="@+id/dashReadoutTile"
+        app:layout_constraintStart_toStartOf="@+id/dashReadoutTile"
+        app:layout_constraintTop_toBottomOf="@+id/dashReadoutStr" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/topMargin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="24dp" />
+        app:layout_constraintGuide_begin="16dp" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/splitLightWindow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
+        android:id="@+id/splitWindowReadout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.81" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
