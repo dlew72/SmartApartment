@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartApartmentApplication">
+        <activity android:name=".SchedulerDashActivity"></activity>
+        <activity android:name=".SettingsDashActivity" />
         <activity
             android:name=".NoHubFoundActivity"
-            android:label="No Connection"/>
+            android:label="No Connection" />
         <activity
             android:name=".DashboardActivity"
             android:label="SmartHub Dashboard" />

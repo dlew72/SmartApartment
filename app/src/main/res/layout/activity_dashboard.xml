@@ -8,17 +8,17 @@
     tools:context=".DashboardActivity">
 
     <View
-        android:id="@+id/dashLightTile"
+        android:id="@+id/setDashLightTile"
         android:layout_width="355dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
         android:background="#03A9F4"
-        app:layout_constraintBottom_toTopOf="@+id/splitLightWindow"
+        app:layout_constraintBottom_toTopOf="@+id/setDashSplitLightWindow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/topMargin" />
+        app:layout_constraintTop_toTopOf="@+id/setDashTopMargin" />
 
     <View
         android:id="@+id/dashLightOpac"
@@ -26,17 +26,17 @@
         android:layout_height="86dp"
         android:layout_marginStart="4dp"
         android:background="#FFFFFF"
-        app:layout_constraintStart_toStartOf="@+id/dashLightImg"
-        app:layout_constraintTop_toTopOf="@+id/dashLightImg" />
+        app:layout_constraintStart_toStartOf="@+id/setDashLightImg"
+        app:layout_constraintTop_toTopOf="@+id/setDashLightImg" />
 
     <ImageView
-        android:id="@+id/dashLightImg"
+        android:id="@+id/setDashLightImg"
         android:layout_width="91dp"
         android:layout_height="93dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
-        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
-        app:layout_constraintTop_toTopOf="@+id/dashLightTile"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
+        app:layout_constraintTop_toTopOf="@+id/setDashLightTile"
         app:srcCompat="@drawable/light_bulb" />
 
     <TextView
@@ -47,9 +47,9 @@
         android:text="Brightness"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
-        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
-        app:layout_constraintTop_toBottomOf="@+id/dashLightImg" />
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
+        app:layout_constraintTop_toBottomOf="@+id/setDashLightImg" />
 
     <SeekBar
         android:id="@+id/dashBrightSeek"
@@ -58,9 +58,9 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
         app:layout_constraintTop_toBottomOf="@+id/dashBrightText" />
 
     <TextView
@@ -71,8 +71,8 @@
         android:text="Warmth"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
-        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
         app:layout_constraintTop_toBottomOf="@+id/dashBrightSeek" />
 
     <SeekBar
@@ -82,13 +82,13 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/dashLightTile"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/dashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
         app:layout_constraintTop_toBottomOf="@+id/dashWarmText" />
 
     <View
-        android:id="@+id/dashWinTile"
+        android:id="@+id/setDashWinTile"
         android:layout_width="353dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
@@ -98,16 +98,16 @@
         app:layout_constraintBottom_toTopOf="@+id/splitWindowReadout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/splitLightWindow" />
+        app:layout_constraintTop_toTopOf="@+id/setDashSplitLightWindow" />
 
     <ImageView
-        android:id="@+id/dashWinImg"
+        android:id="@+id/setDashWinImg"
         android:layout_width="181dp"
         android:layout_height="117dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/dashWinTile"
-        app:layout_constraintStart_toStartOf="@+id/dashWinTile"
-        app:layout_constraintTop_toTopOf="@+id/dashWinTile"
+        app:layout_constraintEnd_toEndOf="@+id/setDashWinTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashWinTile"
+        app:layout_constraintTop_toTopOf="@+id/setDashWinTile"
         app:srcCompat="@drawable/window_shade_icon" />
 
     <TextView
@@ -118,9 +118,9 @@
         android:text="Shade Position"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/dashWinTile"
-        app:layout_constraintStart_toStartOf="@+id/dashWinTile"
-        app:layout_constraintTop_toBottomOf="@+id/dashWinImg" />
+        app:layout_constraintEnd_toEndOf="@+id/setDashWinTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashWinTile"
+        app:layout_constraintTop_toBottomOf="@+id/setDashWinImg" />
 
     <SeekBar
         android:id="@+id/dashWinSeek"
@@ -129,8 +129,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/dashWinTile"
-        app:layout_constraintStart_toStartOf="@+id/dashWinTile"
+        app:layout_constraintEnd_toEndOf="@+id/setDashWinTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashWinTile"
         app:layout_constraintTop_toBottomOf="@+id/dashWinText" />
 
     <View
@@ -145,7 +145,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dashWinTile" />
+        app:layout_constraintTop_toBottomOf="@+id/setDashWinTile" />
 
     <TextView
         android:id="@+id/dashReadoutStr"
@@ -156,7 +156,7 @@
         android:text="Current brightness in room:"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintBottom_toTopOf="@+id/dashGuidelineReadoutSplit"
         app:layout_constraintStart_toStartOf="@+id/dashReadoutTile" />
 
     <TextView
@@ -172,14 +172,14 @@
         app:layout_constraintTop_toBottomOf="@+id/dashReadoutStr" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/topMargin"
+        android:id="@+id/setDashTopMargin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="16dp" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/splitLightWindow"
+        android:id="@+id/setDashSplitLightWindow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -193,7 +193,7 @@
         app:layout_constraintGuide_percent="0.81" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
+        android:id="@+id/dashGuidelineReadoutSplit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

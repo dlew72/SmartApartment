@@ -2,6 +2,7 @@ package com.dannylewis.smartapartmentapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -128,13 +129,13 @@ public class DashboardActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_calendar) {
-
-            // Do something
+            Intent intent = new Intent(this, SchedulerDashActivity.class);
+            startActivity(intent);
             return true;
         }
         if (id == R.id.action_settings) {
-
-            // Do something
+            Intent intent = new Intent(this, SettingsDashActivity.class);
+            startActivity(intent);
             return true;
         }
 
