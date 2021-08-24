@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +48,9 @@ public class DashboardActivity extends AppCompatActivity {
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
+                changeBrightness(progressChangedValue);
+
+                //Handle dynamic bulb
                 lightOpac.setAlpha((float)(progressChangedValue/100.0));
             }
 
@@ -54,7 +58,6 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             public void onStopTrackingTouch(SeekBar seekBar) {
-                lightOpac.setAlpha((float)(progressChangedValue/100.0));
             }
         });
 
@@ -63,9 +66,13 @@ public class DashboardActivity extends AppCompatActivity {
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
+                changeWarmth(progressChangedValue);
+
+                //Handle dynamic bulb
                 String rVal = "FF";
                 String gVal = Integer.toHexString((int)(255-(progressChangedValue*.6)));
                 String bVal = Integer.toHexString((int)(255-(progressChangedValue*1.28)));
+                Log.d("dannyDebug", rVal + gVal + bVal);
                 lightOpac.setBackgroundColor(Color.parseColor("#" + rVal + gVal + bVal));
             }
 
@@ -73,7 +80,6 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             public void onStopTrackingTouch(SeekBar seekBar) {
-                lightOpac.setAlpha((float)(progressChangedValue/100.0));
             }
         });
 
@@ -111,6 +117,7 @@ public class DashboardActivity extends AppCompatActivity {
     private void initComponents() {
         //Light
         //TODO: lights
+        lightOpac.setAlpha(0);
 
         //Shade
         //TODO: shade
@@ -122,5 +129,13 @@ public class DashboardActivity extends AppCompatActivity {
 
     void setLux(int xx) {
         readOut.setText(xx + " lux");
+    }
+
+    void changeBrightness(int newValue) {
+        //TODO: send newValue to arduino
+    }
+
+    void changeWarmth(int newValue) {
+        //TODO: send newValue to arduino
     }
 }
