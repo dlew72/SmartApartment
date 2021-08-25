@@ -7,14 +7,18 @@
     android:background="@color/design_default_color_primary_dark"
     tools:context=".SettingsDashActivity">
 
-    <View
-        android:id="@+id/setDashLightTile"
+    <Button
+        android:id="@+id/setDashLightButton"
         android:layout_width="355dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
-        android:background="#03A9F4"
+        android:background="#FFFFFF"
+        android:backgroundTint="#03A9F4"
+        android:elevation="1dp"
+        android:focusable="auto"
+        android:onClick="goToLightSettings"
         app:layout_constraintBottom_toTopOf="@+id/setDashSplitLightWindow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,13 +29,28 @@
         android:id="@+id/setDashLightImg"
         android:layout_width="135dp"
         android:layout_height="135dp"
-        app:layout_constraintBottom_toBottomOf="@+id/setDashLightTile"
-        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
-        app:layout_constraintTop_toTopOf="@+id/setDashLightTile"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/setDashLightButton"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
+        app:layout_constraintTop_toTopOf="@+id/setDashLightButton"
         app:layout_constraintVertical_bias=".18"
         app:srcCompat="@drawable/light_bulb" />
 
+
+    <TextView
+        android:id="@+id/setDashLightSettingsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:elevation="2dp"
+        android:text="Open Smart Light Settings"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
+        app:layout_constraintTop_toBottomOf="@+id/setDashLightImg" />
 
     <View
         android:id="@+id/setDashWinTile"
@@ -73,19 +92,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
-
-    <TextView
-        android:id="@+id/setDashLightSettingsText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Open Smart Light Settings"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
-        app:layout_constraintTop_toBottomOf="@+id/setDashLightImg" />
 
     <TextView
         android:id="@+id/setDashShadeSettingsText"

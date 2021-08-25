@@ -8,16 +8,15 @@
     tools:context=".DashboardActivity">
 
     <View
-        android:id="@+id/setDashLightTile"
-        android:layout_width="355dp"
+        android:id="@+id/setDashLightButton"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
         android:background="#03A9F4"
+        android:elevation="5dp"
         app:layout_constraintBottom_toTopOf="@+id/setDashSplitLightWindow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/setDashTopMargin" />
 
     <View
@@ -26,6 +25,8 @@
         android:layout_height="86dp"
         android:layout_marginStart="4dp"
         android:background="#FFFFFF"
+        android:elevation="5.001dp"
+        android:outlineProvider="paddedBounds"
         app:layout_constraintStart_toStartOf="@+id/setDashLightImg"
         app:layout_constraintTop_toTopOf="@+id/setDashLightImg" />
 
@@ -34,9 +35,10 @@
         android:layout_width="91dp"
         android:layout_height="93dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
-        app:layout_constraintTop_toTopOf="@+id/setDashLightTile"
+        android:elevation="7dp"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
+        app:layout_constraintTop_toTopOf="@+id/setDashLightButton"
         app:srcCompat="@drawable/light_bulb" />
 
     <TextView
@@ -44,11 +46,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:elevation="7dp"
         android:text="Brightness"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
         app:layout_constraintTop_toBottomOf="@+id/setDashLightImg" />
 
     <SeekBar
@@ -58,9 +61,10 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
+        android:elevation="7dp"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
         app:layout_constraintTop_toBottomOf="@+id/dashBrightText" />
 
     <TextView
@@ -68,11 +72,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:elevation="7dp"
         android:text="Warmth"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
         app:layout_constraintTop_toBottomOf="@+id/dashBrightSeek" />
 
     <SeekBar
@@ -82,22 +87,22 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/setDashLightTile"
+        android:elevation="7dp"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightTile"
+        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
         app:layout_constraintTop_toBottomOf="@+id/dashWarmText" />
 
     <View
         android:id="@+id/setDashWinTile"
-        android:layout_width="353dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
         android:background="#03A9F4"
+        android:elevation="5dp"
         app:layout_constraintBottom_toTopOf="@+id/splitWindowReadout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/setDashSplitLightWindow" />
 
     <ImageView
@@ -105,6 +110,7 @@
         android:layout_width="181dp"
         android:layout_height="117dp"
         android:layout_marginTop="8dp"
+        android:elevation="7dp"
         app:layout_constraintEnd_toEndOf="@+id/setDashWinTile"
         app:layout_constraintStart_toStartOf="@+id/setDashWinTile"
         app:layout_constraintTop_toTopOf="@+id/setDashWinTile"
@@ -115,6 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:elevation="7dp"
         android:text="Shade Position"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -129,6 +136,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
+        android:elevation="7dp"
         app:layout_constraintEnd_toEndOf="@+id/setDashWinTile"
         app:layout_constraintStart_toStartOf="@+id/setDashWinTile"
         app:layout_constraintTop_toBottomOf="@+id/dashWinText" />
@@ -137,14 +145,13 @@
         android:id="@+id/dashReadoutTile"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
         android:background="#03A9F4"
+        android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/setDashWinTile" />
 
     <TextView
@@ -153,6 +160,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginBottom="4dp"
+        android:elevation="7dp"
         android:text="Current brightness in room:"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -163,6 +171,7 @@
         android:id="@+id/dashReadoutXX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="7dp"
         android:text="xx Lux"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
@@ -198,5 +207,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
