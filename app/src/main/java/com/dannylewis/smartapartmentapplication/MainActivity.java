@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
                 goSomewhere();
             }
         }, 3000);
-
     }
 
     void goSomewhere() {
