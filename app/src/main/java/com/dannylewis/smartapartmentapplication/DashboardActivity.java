@@ -158,4 +158,9 @@ public class DashboardActivity extends AppCompatActivity {
     void changeShadePosition(int newValue) {
         //TODO: send newValue to arduino
     }
+
+    @Override
+    public void onBackPressed() {
+        //Do nothing if back button is pressed on dashboard
+    }
 }

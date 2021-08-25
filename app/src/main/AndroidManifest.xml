@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartApartmentApplication">
-        <activity android:name=".SchedulerDashActivity"></activity>
-        <activity android:name=".SettingsDashActivity" />
+        <activity android:name=".ShadeSettingsActivity" android:label="Shade Settings" />
+        <activity android:name=".LightSettingsActivity" android:label="Light Settings" />
+        <activity android:name=".SchedulerDashActivity" android:label="Scheduler" />
+        <activity android:name=".SettingsDashActivity" android:label="Settings" />
         <activity
             android:name=".NoHubFoundActivity"
             android:label="No Connection" />

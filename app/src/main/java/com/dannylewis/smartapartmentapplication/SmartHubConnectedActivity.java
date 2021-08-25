@@ -18,4 +18,9 @@ public class SmartHubConnectedActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        //Do nothing if back button is pressed on this screen
+    }
 }

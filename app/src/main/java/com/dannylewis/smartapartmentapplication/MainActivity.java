@@ -50,14 +50,29 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else { //Hub has not been set up
-            //Go To Search For Hub screen
-            Intent intent = new Intent(this, SearchForHubActivity.class);
-            startActivity(intent);
+            //Search for the Hub --> if found, go to HubDetectedActivity... else, NoHubFoundScreen
+            if (detectHub()) {
+                //Go To Smart Hub Connected screen
+                Intent intent = new Intent(this, SmartHubDetectedActivity.class);
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(this, NoHubFoundActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
+    //Hub is supposedly set up, see if it is reachable
     boolean testConnection() {
+        //TODO: Try sending a hello packet
         Random rd = new Random();
         return rd.nextBoolean();
+    }
+
+    //Hub is NOT set up, see if it is detectable
+    boolean detectHub() {
+        //TODO: Scan wifi for hardcoded name
+        return false;
     }
 }

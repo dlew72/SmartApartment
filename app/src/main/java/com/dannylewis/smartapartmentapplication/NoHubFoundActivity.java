@@ -31,4 +31,9 @@ public class NoHubFoundActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        //Do nothing if back button is pressed on this screen
+    }
 }

@@ -30,4 +30,9 @@ public class SmartHubDetectedActivity extends AppCompatActivity {
         startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
 
     }
+
+    @Override
+    public void onBackPressed() {
+        //Do nothing if back button is pressed on this screen
+    }
 }

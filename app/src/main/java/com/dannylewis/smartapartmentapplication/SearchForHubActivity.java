@@ -22,4 +22,9 @@ public class SearchForHubActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SmartHubDetectedActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        //Do nothing if back button is pressed on this screen
+    }
 }
