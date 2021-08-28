@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     void goSomewhere() {
         //Get shared preferences
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        if (sharedPref.getBoolean("isConnected", true)) {
+        if (sharedPref.getBoolean("isConnected", false)) {
             //Hub is supposedly set up
             //Test Connection
             if (testConnection()) {
@@ -72,6 +72,6 @@ public class MainActivity extends AppCompatActivity {
     //Hub is NOT set up, see if it is detectable
     boolean detectHub() {
         //TODO: Scan wifi for hardcoded name
-        return false;
+        return true;
     }
 }
