@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ public class DashboardActivity extends AppCompatActivity {
     private SeekBar brightSeek;
     private SeekBar warmthSeek;
     private View lightOpac;
+    private ImageView setDashLight;
 
     //Shade:
     private SeekBar shadeSeek;
@@ -27,12 +29,22 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
         //Find views by ID
         {
             //Light
             brightSeek = (SeekBar) findViewById(R.id.dashBrightSeek);
             warmthSeek = (SeekBar) findViewById(R.id.dashWarmSeek);
             lightOpac = findViewById(R.id.dashLightOpac);
+            setDashLight = (ImageView) findViewById(R.id.setDashLightImg);
+
+            //Set opac height and width:
+            int height = setDashLight.getHeight();
+            int width = setDashLight.getWidth();
+
+            lightOpac.getLayoutParams().height = height;
+            lightOpac.getLayoutParams().width = width;
+            lightOpac.requestLayout();
 
             //Shade:
             shadeSeek = (SeekBar) findViewById(R.id.dashWinSeek);

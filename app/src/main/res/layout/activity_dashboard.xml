@@ -21,23 +21,28 @@
 
     <View
         android:id="@+id/dashLightOpac"
-        android:layout_width="82dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="#FFFFFF"
         android:elevation="5.001dp"
         android:outlineProvider="paddedBounds"
+        app:layout_constraintBottom_toBottomOf="@+id/setDashLightImg"
+        app:layout_constraintEnd_toEndOf="@+id/setDashLightImg"
         app:layout_constraintStart_toStartOf="@+id/setDashLightImg"
         app:layout_constraintTop_toTopOf="@+id/setDashLightImg" />
 
     <ImageView
         android:id="@+id/setDashLightImg"
-        android:layout_width="91dp"
-        android:layout_height="93dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
         android:elevation="7dp"
-        app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
+        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        app:layout_constraintEnd_toStartOf="@+id/guideline14"
+        app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toTopOf="@+id/setDashLightButton"
         app:srcCompat="@drawable/light_bulb" />
 
@@ -45,53 +50,53 @@
         android:id="@+id/dashBrightText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:elevation="7dp"
         android:text="Brightness"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
         app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
-        app:layout_constraintTop_toBottomOf="@+id/setDashLightImg" />
+        app:layout_constraintStart_toStartOf="@+id/setDashLightButton" />
 
     <SeekBar
         android:id="@+id/dashBrightSeek"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
         android:elevation="7dp"
+        android:progressDrawable="@drawable/seek_bar"
+        android:thumb="@drawable/seek_thumb"
         app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
-        app:layout_constraintTop_toBottomOf="@+id/dashBrightText" />
+        app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     <TextView
         android:id="@+id/dashWarmText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:elevation="7dp"
         android:text="Warmth"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
-        app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
-        app:layout_constraintTop_toBottomOf="@+id/dashBrightSeek" />
+        app:layout_constraintStart_toStartOf="@+id/setDashLightButton" />
 
     <SeekBar
         android:id="@+id/dashWarmSeek"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
         android:elevation="7dp"
+        android:progressDrawable="@drawable/seek_bar"
+        android:thumb="@drawable/seek_thumb"
         app:layout_constraintEnd_toEndOf="@+id/setDashLightButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/setDashLightButton"
-        app:layout_constraintTop_toBottomOf="@+id/dashWarmText" />
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
     <View
         android:id="@+id/setDashWinTile"
@@ -111,6 +116,7 @@
         android:layout_height="117dp"
         android:layout_marginTop="8dp"
         android:elevation="7dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline12"
         app:layout_constraintEnd_toEndOf="@+id/setDashWinTile"
         app:layout_constraintStart_toStartOf="@+id/setDashWinTile"
         app:layout_constraintTop_toTopOf="@+id/setDashWinTile"
@@ -120,26 +126,26 @@
         android:id="@+id/dashWinText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:elevation="7dp"
         android:text="Shade Position"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintEnd_toEndOf="@+id/setDashWinTile"
-        app:layout_constraintStart_toStartOf="@+id/setDashWinTile"
-        app:layout_constraintTop_toBottomOf="@+id/setDashWinImg" />
+        app:layout_constraintStart_toStartOf="@+id/setDashWinTile" />
 
     <SeekBar
         android:id="@+id/dashWinSeek"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="6dp"
         android:layout_marginEnd="24dp"
         android:elevation="7dp"
+        android:progressDrawable="@drawable/seek_bar"
+        android:thumb="@drawable/seek_thumb"
         app:layout_constraintEnd_toEndOf="@+id/setDashWinTile"
         app:layout_constraintStart_toStartOf="@+id/setDashWinTile"
-        app:layout_constraintTop_toBottomOf="@+id/dashWinText" />
+        app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
     <View
         android:id="@+id/dashReadoutTile"
@@ -158,13 +164,13 @@
         android:id="@+id/dashReadoutStr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
         android:layout_marginBottom="4dp"
         android:elevation="7dp"
         android:text="Current brightness in room:"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/dashGuidelineReadoutSplit"
+        app:layout_constraintEnd_toEndOf="@+id/dashReadoutTile"
         app:layout_constraintStart_toStartOf="@+id/dashReadoutTile" />
 
     <TextView
@@ -221,5 +227,54 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.34" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.63201094" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
