@@ -76,7 +76,11 @@ public class DashboardActivity extends AppCompatActivity {
                 changeBrightness(progressChangedValue);
 
                 //Handle dynamic bulb
-                lightOpac.setAlpha((float)(progressChangedValue/100.0));
+                if (progressChangedValue == 0)
+                    lightOpac.setAlpha((float)(0));
+                else
+                    lightOpac.setAlpha((float)(progressChangedValue/200.0 + .5));
+
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
