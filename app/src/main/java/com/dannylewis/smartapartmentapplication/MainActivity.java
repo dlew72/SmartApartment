@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     void goSomewhere() {
         //Get shared preferences
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
         if (sharedPref.getBoolean("isConnected", false)) {
             //Hub is supposedly set up
             //Test Connection
