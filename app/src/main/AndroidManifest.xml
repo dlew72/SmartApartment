@@ -9,10 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartApartmentApplication">
-        <activity android:name=".ShadeSettingsActivity" android:label="Shade Settings" />
-        <activity android:name=".LightSettingsActivity" android:label="Light Settings" />
-        <activity android:name=".SchedulerDashActivity" android:label="Scheduler" />
-        <activity android:name=".SettingsDashActivity" android:label="Settings" />
+        <activity
+            android:name=".LightSchedulerActivity"
+            android:label="@string/title_activity_light_scheduler"
+            android:theme="@style/Theme.SmartApartmentApplication.NoActionBar"></activity>
+        <activity
+            android:name=".ShadeSettingsActivity"
+            android:label="Shade Settings" />
+        <activity
+            android:name=".LightSettingsActivity"
+            android:label="Light Settings" />
+        <activity
+            android:name=".SchedulerDashActivity"
+            android:label="Scheduler" />
+        <activity
+            android:name=".SettingsDashActivity"
+            android:label="Settings" />
         <activity
             android:name=".NoHubFoundActivity"
             android:label="No Connection" />
@@ -24,9 +36,6 @@
             android:label="SmartHub Setup" />
         <activity
             android:name=".SmartHubDetectedActivity"
-            android:label="SmartHub Setup" />
-        <activity
-            android:name=".SearchForHubActivity"
             android:label="SmartHub Setup" />
         <activity
             android:name=".MainActivity"
