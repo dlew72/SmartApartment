@@ -9,10 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartApartmentApplication">
+        <activity android:name=".NewLightActionActivity"></activity>
         <activity
             android:name=".LightSchedulerActivity"
             android:label="@string/title_activity_light_scheduler"
-            android:theme="@style/Theme.SmartApartmentApplication.NoActionBar"></activity>
+            android:theme="@style/Theme.SmartApartmentApplication.NoActionBar" />
         <activity
             android:name=".ShadeSettingsActivity"
             android:label="Shade Settings" />

@@ -2,6 +2,12 @@
     <string name="app_name">Smart Apartment Application</string>
     <string name="preference_file_key">SMARTAPARTMENT</string>
     <string name="title_activity_light_scheduler">LightSchedulerActivity</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_1">S</string>
+    <string name="tab_text_2">M</string>
+    <string name="tab_text_3">T</string>
+    <string name="tab_text_4">W</string>
+    <string name="tab_text_5">R</string>
+    <string name="tab_text_6">F</string>
+    <string name="tab_text_7">S</string>
+
 </resources>

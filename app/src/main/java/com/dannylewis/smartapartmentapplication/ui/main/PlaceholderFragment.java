@@ -47,13 +47,11 @@ public class PlaceholderFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_light_scheduler, container, false);
-        final TextView textView = root.findViewById(R.id.section_label);
-        pageViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        //On Create Code Here:
+            //Check for existing actions for current day of week
+            //IF NONE -- Display none message
+            //IF YES -- Populate screen with each action
+        //
         return root;
     }
 }
