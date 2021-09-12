@@ -2,9 +2,9 @@ package com.dannylewis.smartapartmentapplication;
 
 public class ActionClass {
 
-    private char weekday;
-    private short hour;
-    private short minute;
+    private char weekday; //N M T W R F A
+    private short hour; //0 -- 23
+    private short minute; // 0 -- 59
     private char actionType; //S or L
     private short param1; //0 -- 100
     private short param2; //0 -- 100
