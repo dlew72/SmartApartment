@@ -188,8 +188,8 @@ public class PlaceholderFragment extends Fragment {
 
     private String AMorPM(String hour) {
         if (Integer.parseInt(hour) > 11)
-            return "AM";
-        else
             return "PM";
+        else
+            return "AM";
     }
 }
