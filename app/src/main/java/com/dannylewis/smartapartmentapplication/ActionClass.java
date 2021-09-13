@@ -19,6 +19,26 @@ public class ActionClass {
     }
 
     public String convertActionToString() {
-        return ("" + weekday + hour + minute + actionType + param1 + param2);
+        String actionString = "";
+        actionString += weekday;
+        if (hour < 10)
+            actionString += "0";
+        actionString += hour;
+        if (minute < 10)
+            actionString += "0";
+        actionString += minute;
+        actionString += actionType;
+        if (param1 < 10)
+            actionString += "0";
+        if (param1 < 100)
+            actionString += "0";
+        actionString += param1;
+        if (param2 < 10)
+            actionString += "0";
+        if (param2 < 10)
+            actionString += "0";
+        actionString += param2;
+
+        return actionString;
     }
 }
