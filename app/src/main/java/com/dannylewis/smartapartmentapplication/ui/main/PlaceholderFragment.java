@@ -128,27 +128,21 @@ public class PlaceholderFragment extends Fragment {
             TV.setTextSize(20);
             TV.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             TV.setTextColor(Color.parseColor("#FFFFFF"));
-            Log.d("bruh", "here----3");
 
             linLay.addView(TV);
 
         }
         else {
-            Log.d("bruh", "here----22");
 
-
-            //TODO: Create a comparator and sort the arraylist in chronological order
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && actionList.size() > 1) {
                 Comparator<String> actionListComparator = new Comparator<String>(){
 
                     @Override
                     public int compare(String s1, String t1) {
-                        Log.d("bruh", "here0");
 
                         int hour1 = Integer.parseInt(s1.substring(s1.lastIndexOf("$")+1, s1.indexOf(":")));
                         int hour2 = Integer.parseInt(t1.substring(t1.lastIndexOf("$")+1, t1.indexOf(":")));
 
-                        Log.d("bruh", "here1");
 
                         if (s1.charAt(s1.indexOf(":")+3) == 'P')
                             hour1 += 12;
@@ -165,7 +159,6 @@ public class PlaceholderFragment extends Fragment {
                         int min1 = Integer.parseInt(s1.substring(s1.indexOf(':')+1, s1.indexOf(':') + 3));
                         int min2 = Integer.parseInt(t1.substring(t1.indexOf(':')+1, t1.indexOf(':') + 3));
 
-                        Log.d("bruh", "here12412412214");
 
                         if (min1 < min2)
                             return -1;
@@ -177,10 +170,8 @@ public class PlaceholderFragment extends Fragment {
                     }
 
                 };
-                Log.d("bruh", "here666666666666666");
 
                 actionList.sort(actionListComparator);
-                Log.d("bruh", "here7777777777777777777777777777777777777777777");
 
             }
 
