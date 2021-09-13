@@ -108,8 +108,6 @@ public class PlaceholderFragment extends Fragment {
     private void setActionText(char weekDay, LinearLayout linLay) {
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("ACTIONS", Context.MODE_PRIVATE);
 
-
-
         ArrayList<String> actionList = new ArrayList<String>();
 
         Map<String, ?> allEntries = sharedPref.getAll();
@@ -117,17 +115,20 @@ public class PlaceholderFragment extends Fragment {
             if (entry.getKey().charAt(0) == '$') {
                 String actionCode = entry.getValue().toString();
                 if (actionCode.charAt(0) == weekDay)
-                    actionList.add(entry.getKey() +"$" + hourToString(actionCode.substring(1,3)) + ":" + actionCode.substring(3,5) + AMorPM(actionCode.substring(1,3)) + "\n\tSet brightness to: " + Integer.parseInt(actionCode.substring(6, 9)) + "%" + "\n\tSet warmth to: " + Integer.parseInt(actionCode.substring(9)) + "%");
+                    actionList.add(entry.getKey() +"$" + hourToString(actionCode.substring(1,3)) + ":" + actionCode.substring(3,5) + AMorPM(actionCode.substring(1,3)) + "\nSet brightness to: " + Integer.parseInt(actionCode.substring(6, 9)) + "%" + "\nSet warmth to: " + Integer.parseInt(actionCode.substring(9)) + "%");
             }
         }
 
         if (actionList.size() == 0) {
             TextView TV = new TextView(this.getActivity());
             TV.setText("There are no scheduled actions on this day.\n\nCreate one by clicking the (+) icon below!");
+            TV.setTextSize(20);
+            TV.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             linLay.addView(TV);
-
         }
         else {
+
+            //TODO: Create a comparator and sort the arraylist in chronological order
 
             for( int i = 0; i < actionList.size(); i++ )
             {
@@ -136,6 +137,12 @@ public class PlaceholderFragment extends Fragment {
                 String s = actionList.get(i);
 
                 textView.setText(s.substring(s.lastIndexOf("$")+1));
+
+                textView.setPadding(8, 16, 8, 16);
+                textView.setTextSize(20);
+
+                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
 
                 textView.setId(7777777 + Integer.parseInt(s.substring(1, s.lastIndexOf("$"))));
 
@@ -159,6 +166,7 @@ public class PlaceholderFragment extends Fragment {
                    builder.create().show();
 
                 });
+
                 linLay.addView(textView);
 
             }
