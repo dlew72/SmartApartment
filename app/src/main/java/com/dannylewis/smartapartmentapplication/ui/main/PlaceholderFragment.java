@@ -129,6 +129,13 @@ public class PlaceholderFragment extends Fragment {
             TV.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             TV.setTextColor(Color.parseColor("#FFFFFF"));
 
+            TV.setPadding(0, 24, 0, 24);
+            TV.setElevation(6);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(16,32,16,32);
+            TV.setLayoutParams(params);
+
             linLay.addView(TV);
 
         }
@@ -186,6 +193,12 @@ public class PlaceholderFragment extends Fragment {
                 textView.setPadding(8, 16, 8, 16);
                 textView.setTextSize(20);
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
+                textView.setBackgroundColor(Color.parseColor("#03A9F4"));
+                textView.setElevation(6);
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.setMargins(64,32,64,32);
+                textView.setLayoutParams(params);
 
 
                 textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
