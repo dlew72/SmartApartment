@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.dannylewis.smartapartmentapplication.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Map;
 
 /**
@@ -106,6 +108,8 @@ public class PlaceholderFragment extends Fragment {
     }
 
     private void setActionText(char weekDay, LinearLayout linLay) {
+
+
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("ACTIONS", Context.MODE_PRIVATE);
 
         ArrayList<String> actionList = new ArrayList<String>();
@@ -118,19 +122,67 @@ public class PlaceholderFragment extends Fragment {
                     actionList.add(entry.getKey() +"$" + hourToString(actionCode.substring(1,3)) + ":" + actionCode.substring(3,5) + AMorPM(actionCode.substring(1,3)) + "\nSet brightness to: " + Integer.parseInt(actionCode.substring(6, 9)) + "%" + "\nSet warmth to: " + Integer.parseInt(actionCode.substring(9)) + "%");
             }
         }
-
         if (actionList.size() == 0) {
             TextView TV = new TextView(this.getActivity());
             TV.setText("There are no scheduled actions on this day.\n\nCreate one by clicking the (+) icon below!\n\nTap on a created action to delete it.");
             TV.setTextSize(20);
             TV.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             TV.setTextColor(Color.parseColor("#FFFFFF"));
+            Log.d("bruh", "here----3");
 
             linLay.addView(TV);
+
         }
         else {
+            Log.d("bruh", "here----22");
+
 
             //TODO: Create a comparator and sort the arraylist in chronological order
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && actionList.size() > 1) {
+                Comparator<String> actionListComparator = new Comparator<String>(){
+
+                    @Override
+                    public int compare(String s1, String t1) {
+                        Log.d("bruh", "here0");
+
+                        int hour1 = Integer.parseInt(s1.substring(s1.lastIndexOf("$")+1, s1.indexOf(":")));
+                        int hour2 = Integer.parseInt(t1.substring(t1.lastIndexOf("$")+1, t1.indexOf(":")));
+
+                        Log.d("bruh", "here1");
+
+                        if (s1.charAt(s1.indexOf(":")+3) == 'P')
+                            hour1 += 12;
+
+                        if (t1.charAt(t1.indexOf(":")+3) == 'P')
+                            hour2 += 12;
+
+                        if (hour1 < hour2)
+                            return -1;
+                        if (hour1 > hour2)
+                            return 1;
+
+                        //Hours must be the same, check minutes
+                        int min1 = Integer.parseInt(s1.substring(s1.indexOf(':')+1, s1.indexOf(':') + 3));
+                        int min2 = Integer.parseInt(t1.substring(t1.indexOf(':')+1, t1.indexOf(':') + 3));
+
+                        Log.d("bruh", "here12412412214");
+
+                        if (min1 < min2)
+                            return -1;
+                        if (min1 > min2)
+                            return 1;
+
+                        //minutes are same, equal
+                        return 0;
+                    }
+
+                };
+                Log.d("bruh", "here666666666666666");
+
+                actionList.sort(actionListComparator);
+                Log.d("bruh", "here7777777777777777777777777777777777777777777");
+
+            }
 
             for( int i = 0; i < actionList.size(); i++ )
             {
