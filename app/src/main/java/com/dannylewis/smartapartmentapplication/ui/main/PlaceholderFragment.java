@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,15 +16,14 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import com.dannylewis.smartapartmentapplication.R;
-import com.dannylewis.smartapartmentapplication.RemoveActionDialog;
-import com.dannylewis.smartapartmentapplication.SchedulerDashActivity;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -121,9 +121,11 @@ public class PlaceholderFragment extends Fragment {
 
         if (actionList.size() == 0) {
             TextView TV = new TextView(this.getActivity());
-            TV.setText("There are no scheduled actions on this day.\n\nCreate one by clicking the (+) icon below!");
+            TV.setText("There are no scheduled actions on this day.\n\nCreate one by clicking the (+) icon below!\n\nTap on a created action to delete it.");
             TV.setTextSize(20);
             TV.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            TV.setTextColor(Color.parseColor("#FFFFFF"));
+
             linLay.addView(TV);
         }
         else {
@@ -140,6 +142,8 @@ public class PlaceholderFragment extends Fragment {
 
                 textView.setPadding(8, 16, 8, 16);
                 textView.setTextSize(20);
+                textView.setTextColor(Color.parseColor("#FFFFFF"));
+
 
                 textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
@@ -147,11 +151,10 @@ public class PlaceholderFragment extends Fragment {
                 textView.setId(7777777 + Integer.parseInt(s.substring(1, s.lastIndexOf("$"))));
 
                 textView.setOnClickListener(view -> {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
                     builder.setMessage("Do you want to delete this action?");
 
-                    builder.setPositiveButton("Delete", (DialogInterface.OnClickListener) (dialog, id) -> {
+                    builder.setPositiveButton("Delete", (dialog, id) -> {
                         // User clicked OK button
                         sharedPref.edit().remove("$" + ((int)view.getId() - 7777777)).commit();
                         FragmentTransaction ftr = getFragmentManager().beginTransaction();
@@ -159,7 +162,7 @@ public class PlaceholderFragment extends Fragment {
 
 
                     });
-                    builder.setNegativeButton("Keep", (DialogInterface.OnClickListener) (dialog, id) -> {
+                    builder.setNegativeButton("Keep", (dialog, id) -> {
                         // User cancelled the dialog
                     });
 
