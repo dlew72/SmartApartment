@@ -18,8 +18,8 @@ public class SchedulerDashActivity extends AppCompatActivity {
     }
 
     public void goToShadeScheduler(View view) {
-        //Intent intent = new Intent(this, ShadeSchedulerActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, ShadeSchedulerActivity.class);
+        startActivity(intent);
     }
 
     public void goToLightScheduler(View view) {
@@ -31,5 +31,11 @@ public class SchedulerDashActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
     }
 }

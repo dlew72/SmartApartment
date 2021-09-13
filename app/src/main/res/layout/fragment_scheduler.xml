@@ -11,6 +11,6 @@
         android:background="@color/design_default_color_primary_dark"
         android:gravity="center"
         android:orientation="vertical"
-        tools:context=".ui.main.PlaceholderFragment" />
+        tools:context=".ui.main.Sched_Fragment" />
 
     </ScrollView>
