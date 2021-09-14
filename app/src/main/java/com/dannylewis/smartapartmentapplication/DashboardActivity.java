@@ -18,6 +18,8 @@ public class DashboardActivity extends AppCompatActivity {
     private SeekBar warmthSeek;
     private View lightOpac;
     private ImageView setDashLight;
+    private ImageView setDashWin;
+
 
     //Shade:
     private SeekBar shadeSeek;
@@ -37,6 +39,8 @@ public class DashboardActivity extends AppCompatActivity {
             warmthSeek = (SeekBar) findViewById(R.id.dashWarmSeek);
             lightOpac = findViewById(R.id.dashLightOpac);
             setDashLight = (ImageView) findViewById(R.id.setDashLightImg);
+            setDashWin = (ImageView) findViewById(R.id.setDashWinImg);
+
 
             //Set opac height and width:
             int height = setDashLight.getHeight();
@@ -53,13 +57,14 @@ public class DashboardActivity extends AppCompatActivity {
             readOut = (TextView) findViewById(R.id.dashReadoutXX);
         }
 
-        //Initialize dynamic components on screen
+        //Initialize dynamic components on screen from HUB VALUES
         {
             //Light
             //TODO: lights
             lightOpac.setAlpha(0);
 
             //Shade
+            updateShadeImage(0, setDashWin);
             //TODO: shade
 
             //Readout
@@ -116,6 +121,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
+                updateShadeImage(progressChangedValue, setDashWin);
                 changeShadePosition(progressChangedValue);
             }
 
@@ -127,6 +133,20 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void updateShadeImage(int progressChangedValue, ImageView i) {
+        if (progressChangedValue < 13) {
+            i.setImageResource(R.drawable.window_shade_icon_0);
+        } else if (progressChangedValue < 38) {
+            i.setImageResource(R.drawable.window_shade_icon_25);
+        } else if (progressChangedValue < 63) {
+            i.setImageResource(R.drawable.window_shade_icon_50);
+        } else if (progressChangedValue < 88) {
+            i.setImageResource(R.drawable.window_shade_icon_75);
+        } else {
+            i.setImageResource(R.drawable.window_shade_icon_100);
+        }
     }
 
     @Override
