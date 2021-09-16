@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/design_default_color_primary_dark"
-    tools:context=".SmartHubDetectedActivity">
+    tools:context=".SmartHubManualSetup">
 
     <Button
         android:id="@+id/button2"
@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/button_color"
-        android:onClick="goToConnected"
-        android:text="DEV-- Continue"
+        android:onClick="testConnection"
+        android:text="Test Connection"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Smart Hub Detected!"
+        android:text="Manual Setup"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
