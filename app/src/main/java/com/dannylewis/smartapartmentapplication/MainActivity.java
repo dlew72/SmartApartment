@@ -60,15 +60,14 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 goSomewhere();
             }
-        }, 2500);
+        }, 2000);
     }
 
     void goSomewhere() {
         //Get shared preferences
         SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
-        if (sharedPref.getBoolean("isConnected", true)) {
-            //Hub is supposedly set up
-            //Test Connection
+        Log.d("DEBUG1", Boolean.toString(sharedPref.getBoolean("previouslySetUp", false)));
+        if (sharedPref.getBoolean("previouslySetUp", false))
             if (helloSuccess) {
                 //Go To Dashboard screen
                 Intent intent = new Intent(this, DashboardActivity.class);
@@ -78,17 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, NoHubFoundActivity.class);
                 startActivity(intent);
             }
-
-        } else if (wifiAccessPerm && locPerm && wifiChangePerm) { //Hub has not been set up, attempt automatic setup
-            if (autoConnectHub()) {
-                //Go To Smart Hub Connected screen
-                Intent intent = new Intent(this, SmartHubConnectedActivity.class);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(this, SmartHubManualSetup.class);
-                startActivity(intent);
-            }
-        } else {
+        else { //no hub has ever been set up before
             Intent intent = new Intent(this, SmartHubManualSetup.class);
             startActivity(intent);
         }

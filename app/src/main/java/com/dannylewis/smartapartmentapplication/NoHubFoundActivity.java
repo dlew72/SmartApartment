@@ -25,8 +25,8 @@ public class NoHubFoundActivity extends AppCompatActivity {
 
     public void reset(View view) {
         //TODO: clear ALL app data
-        SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-        settings.edit().clear().commit();
+        SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
+        sharedPref.edit().clear().commit();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

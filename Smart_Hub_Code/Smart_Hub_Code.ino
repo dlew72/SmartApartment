@@ -12,6 +12,7 @@ bool operationMode = false;
 
 int greenLEDpin = 12;
 int redLEDpin = 13;
+int hardResetButton = 15;
 
 struct {
   char wifiSsid[33];
@@ -38,6 +39,10 @@ void setup()
 
   pinMode(greenLEDpin, OUTPUT);
   pinMode(redLEDpin, OUTPUT);
+  pinMode(hardResetButton, INPUT);
+
+  digitalWrite(redLEDpin, HIGH);
+
 
 
   if (EEPROM.read(0) == char(7)) {
@@ -83,6 +88,7 @@ void setup()
         break;
       }
       digitalWrite(redLEDpin, !digitalRead(redLEDpin));
+      delay(500);
     }
 
     if (!operationMode) {
@@ -125,11 +131,18 @@ void hubSetupMode() {
 void loop()
 {
   server.handleClient();
-  
+  digitalWrite(redLEDpin, HIGH);
   if (operationMode)
     digitalWrite(greenLEDpin, HIGH);
   else
     digitalWrite(greenLEDpin, LOW);
+
+  if (digitalRead(hardResetButton) == HIGH) {
+    Serial.println("WIPING EEPROM");
+    wipeEEPROM();
+    resetFunc();
+
+  }
 
 }
 
@@ -197,12 +210,14 @@ void handleCredentials() {
           //connection failed (timeout)
           break;
         }
-        //TODO: blink red light
+        digitalWrite(redLEDpin, !digitalRead(redLEDpin));
+        delay(500);
       }
 
       if (!operationMode) {
         //credentials failed. wipe EEPROM(0) and reset.
         EEPROM.write(0, 0);
+        EEPROM.commit();
         Serial.println("RESETTING...");
         resetFunc();
       }
@@ -225,11 +240,17 @@ void loopAttemptConnection() {
       else {
         delay(500);
         Serial.println("Connection failed. Trying again...");
+        digitalWrite(redLEDpin, !digitalRead(redLEDpin));
+          if (digitalRead(hardResetButton) == HIGH) {
+            Serial.println("WIPING EEPROM");
+            wipeEEPROM();
+            resetFunc();
+          }
       }
    }
 }
 
-void clearSavedCredentials() {
-  for (int i = 0; i < 100; i++)
-    EEPROM.write(i, 0);
+void wipeEEPROM() {
+  EEPROM.write(0, char(0));
+  EEPROM.commit();
 }

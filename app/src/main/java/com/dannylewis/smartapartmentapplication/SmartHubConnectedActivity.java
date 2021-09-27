@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -30,6 +33,8 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SmartHubConnectedActivity extends AppCompatActivity {
 
@@ -53,7 +58,10 @@ public class SmartHubConnectedActivity extends AppCompatActivity {
     }
 
     public void sendCredentials(View view) throws JSONException {
-        TextView displayData = findViewById(R.id.dispData);
+        Button button = findViewById(R.id.sendCred);
+        button.setEnabled(false);
+        ProgressBar wait = findViewById(R.id.waitSpin);
+        wait.setVisibility(View.VISIBLE);
 
         usern = findViewById(R.id.networkName);
         pass = findViewById(R.id.passwordNETWORK);
@@ -101,8 +109,10 @@ public class SmartHubConnectedActivity extends AppCompatActivity {
                 String responseString = "";
                 if (response != null) {
                     responseString = String.valueOf(response.statusCode);
-                    displayData.setText(response.statusCode);
-                    // can get more details such as response.headers
+                    if (responseString.equals("200")) {
+
+
+                    }
                 }
                 return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
             }
@@ -110,7 +120,24 @@ public class SmartHubConnectedActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
+        SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("previouslySetUp", true);
+        editor.commit();
 
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                launchSplash();
+            }
+        }, 10000);
+
+
+    }
+
+    public void launchSplash() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public static String getApIpAddr(Context context) {

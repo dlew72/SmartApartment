@@ -8,7 +8,7 @@
     tools:context=".SmartHubConnectedActivity">
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/sendCred"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -30,6 +30,7 @@
         android:ems="10"
         android:hint="SSID (Network Name)"
         android:inputType="textPersonName"
+        android:textColor="#EEEEEE"
         android:textColorHint="#BBBBBB"
         app:layout_constraintBottom_toTopOf="@+id/passwordNETWORK"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +45,7 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:textColor="#EEEEEE"
         android:textColorHint="#BBBBBB"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,27 +82,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
-    <TextView
-        android:id="@+id/dispData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:paddingLeft="16sp"
-        android:paddingRight="16sp"
-        android:text=":hello world:"
-        android:textAlignment="center"
-        android:textColor="#EEEEEE"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
+
+    <ProgressBar
+        android:id="@+id/waitSpin"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendCred" />
 </androidx.constraintlayout.widget.ConstraintLayout>
