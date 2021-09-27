@@ -15,6 +15,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
@@ -29,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean wifiAccessPerm = false;
     private boolean wifiChangePerm = false;
     private boolean locPerm = false;
+    private boolean helloSuccess = false;
 
 
     @Override
@@ -39,21 +54,22 @@ public class MainActivity extends AppCompatActivity {
 
         //Determine which screen to send user to
         getPermissions();
+        testConnection();
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 goSomewhere();
             }
-        }, 5000);
+        }, 2500);
     }
 
     void goSomewhere() {
         //Get shared preferences
         SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
-        if (sharedPref.getBoolean("isConnected", false)) {
+        if (sharedPref.getBoolean("isConnected", true)) {
             //Hub is supposedly set up
             //Test Connection
-            if (testConnection()) {
+            if (helloSuccess) {
                 //Go To Dashboard screen
                 Intent intent = new Intent(this, DashboardActivity.class);
                 startActivity(intent);
@@ -79,10 +95,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Hub is supposedly set up, see if it is reachable
-    boolean testConnection() {
-        //TODO: Try sending a hello packet
-        Random rd = new Random();
-        return rd.nextBoolean();
+    void testConnection() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+
+        String url ="http://192.168.0.177";
+        Log.i("VOLLEY", "Inside function");
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url+"/",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("VOLLEY", response);
+                        if (response.contains("Hello world 123!"))
+                            helloSuccess = true;
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("VOLLEY", error.toString());
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     void getPermissions() {

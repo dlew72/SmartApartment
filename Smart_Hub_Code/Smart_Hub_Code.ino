@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WiFiMulti.h> 
-#include <ESP8266mDNS.h>
+#include <ESP8266LLMNR.h>
 #include <ESP8266WebServer.h>   // Include the WebServer library
 #include <EEPROM.h>
 
@@ -9,6 +9,15 @@ ESP8266WebServer server(80);    // Create a webserver object that listens for HT
 
 int addr = 0;
 bool operationMode = false;
+
+int greenLEDpin = 12;
+int redLEDpin = 13;
+
+struct {
+  char wifiSsid[33];
+  char wifiPass[64];
+} credentials;
+
 
 void handleRoot();              // function prototypes for HTTP handlers
 void handleNotFound();
@@ -18,29 +27,52 @@ void(* resetFunc) (void) = 0;
 void setup()
 {
   Serial.begin(115200);
-  Serial.println();
+  Serial.println("Fresh Run");
+  EEPROM.begin(1024);
+  EEPROM.get(0, credentials);
+
+  Serial.println("OLD EEPROM: " + String(credentials.wifiSsid) + ", " + String(credentials.wifiPass));
+
+  for (int i = 0; i < 50; i++)
+   Serial.print(EEPROM.read(i));
+
+  pinMode(greenLEDpin, OUTPUT);
+  pinMode(redLEDpin, OUTPUT);
+
 
   if (EEPROM.read(0) == char(7)) {
     //Supposedly set up. Try connecting
     String ssid = "";
     String password = "";
-    int ssidLen = EEPROM.read(1);
-    int passwordLen = EEPROM.read(2+ssidLen);
+    int ssidLen = int(EEPROM.read(1));
+    int passwordLen = int(EEPROM.read(2+ssidLen));
 
+    Serial.println("ssid:");
     for (int i = 0; i < ssidLen; i++) {
-      ssid += EEPROM.read(2+i);
+      ssid += char(EEPROM.read(2+i));
+      Serial.print(char(EEPROM.read(2+i)));
+    }
+    
+    Serial.println("pass:");
+    for (int i = 0; i < passwordLen; i++) {
+      password += char(EEPROM.read(3+i+ssidLen));
+      Serial.print(char(EEPROM.read(3+i+ssidLen)));
     }
 
-    for (int i = 0; i < passwordLen; i++) {
-      password += EEPROM.read(2+i);
-    }
+    Serial.println("Password: " + password);
+    
+    IPAddress ip(192, 168, 0, 177);
+    IPAddress dns(192, 168, 0, 1);
+    IPAddress gateway(192, 168, 0, 1);
+    IPAddress subnet(255, 255, 255, 0);
+    WiFi.config(ip, dns, gateway, subnet);
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     unsigned long timeOfStartConnection = millis();
-
     
     while (1) {
+      yield();
       if (WiFi.status() == WL_CONNECTED) {
         //We connected to the router
         operationMode = true;
@@ -50,13 +82,14 @@ void setup()
         //connection failed (timeout)
         break;
       }
-      //TODO: blink red light
+      digitalWrite(redLEDpin, !digitalRead(redLEDpin));
     }
 
     if (!operationMode) {
       Serial.println("Connection failed. Trying again...");
       loopAttemptConnection();
     }
+
 
   }
   else {
@@ -82,12 +115,9 @@ void hubSetupMode() {
     if(result == true)
     {
       Serial.println("Ready");
-      if (MDNS.begin("esp8266")) {              // Start the mDNS responder for esp8266.local
-      Serial.println("mDNS responder started");
-    } else {
-      Serial.println("Error setting up MDNS responder!");
+      LLMNR.begin("esp8266");
+      Serial.println("LLMNR responder started");
     }
-  }
   else
     Serial.println("Failure to set up Soft-AP");
 }
@@ -95,6 +125,12 @@ void hubSetupMode() {
 void loop()
 {
   server.handleClient();
+  
+  if (operationMode)
+    digitalWrite(greenLEDpin, HIGH);
+  else
+    digitalWrite(greenLEDpin, LOW);
+
 }
 
 void handleRoot() {
@@ -113,7 +149,7 @@ void handleCredentials() {
 
       /** the current address in the EEPROM (i.e. which byte we're going to write to next) **/
       addr = 0;
-      EEPROM.write(addr, char(7));
+      EEPROM.put(addr, char(7));
       addr++;
       
       String message = server.arg("plain");
@@ -122,28 +158,36 @@ void handleCredentials() {
 
       String password = message.substring(message.indexOf("p$$$")+7, message.length()-2);
 
-      EEPROM.write(addr, username.length());
+      EEPROM.put(addr, username.length());
       addr++;
 
       for (int i = 0; i < username.length(); i++) {
-         EEPROM.write(addr, username[i]);
+         EEPROM.put(addr, username[i]);
          addr++;
       }
 
-      EEPROM.write(addr, password.length());
+      EEPROM.put(addr, password.length());
       addr++;
 
       for (int i = 0; i < password.length(); i++) {
-         EEPROM.write(addr, password[i]);
+         EEPROM.put(addr, password[i]);
          addr++;
       }
 
+      EEPROM.commit();
+
       //Try to use credentials to connect:
       WiFi.mode(WIFI_STA);
+      IPAddress ip(192, 168, 0, 177);
+      IPAddress dns(192, 168, 0, 1);
+      IPAddress gateway(192, 168, 0, 1);
+      IPAddress subnet(255, 255, 255, 0);
+      WiFi.config(ip, dns, gateway, subnet);
       WiFi.begin(username, password);
       unsigned long timeOfStartConnection = millis();
   
       while (1) {
+        yield();
         if (WiFi.status() == WL_CONNECTED) {
           //We connected to the router
           operationMode = true;

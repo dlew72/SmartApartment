@@ -109,6 +109,8 @@ public class SmartHubConnectedActivity extends AppCompatActivity {
         };
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+
+
     }
 
     public static String getApIpAddr(Context context) {
