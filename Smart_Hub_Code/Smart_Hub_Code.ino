@@ -30,6 +30,9 @@ String lightServerIPSetup = "http://192.168.4.179/";
 // function prototypes for HTTP handlers
 void handleRoot();              
 void handleNotFound();
+void handleSchedule();
+void handleAction();
+
 
 // misc function prototypes
 void hubSetupMode();
@@ -183,6 +186,67 @@ void handleCredentials() {
 void handleNotFound(){
     Serial.println("NOT FOUND");
   server.send(404, "text/plain", "404: Not found"); // Send HTTP status 404 (Not Found) when there's no handler for the URI in the request
+}
+
+void handleSchedule() {
+
+}
+
+void handleAction(){
+    Serial.println("ACTION DETECTED");
+    
+    if (server.hasArg("plain")== false){ //Check if body received
+           server.send(400, "text/plain", "fail");
+           Serial.println("400 fail");
+           return;
+    }
+    
+    server.send(200, "text/plain", "success");
+
+    String message = server.arg("plain");
+
+    Serial.println("MESSAGE:");
+    Serial.println(message);
+
+    if (message.substring(2, 6) != "a###") {
+           server.send(400, "text/plain", "invalid syntax");
+           Serial.println("400 syntax fail");
+           return;
+    }
+ 
+    String actionString = message.substring(9, message.length()-2);
+        //SAMPLE
+        // N0930L050100
+        // X0000L050100
+    if (actionString[5] == 'L') {
+      //send to lights
+      sendAction(lightServerIP, actionString.substring(6, 9).toInt(), actionString.substring(9).toInt());
+    }
+    if (actionString[5] == 'S') {
+      //send to shade
+      sendAction(shadeServerIP, actionString.substring(6, 9).toInt(), 0);
+    }
+}
+
+void sendAction(String ip, int p1, int p2) {
+  digitalWrite(greenLEDpin, LOW);
+  WiFiClient cli;
+  HTTPClient http;
+  int httpResponseCode;
+
+  http.begin(cli, ip + "action");
+
+  http.addHeader("Content-Type", "text/plain");
+
+  httpResponseCode = http.POST("#" + String(p1) + "$" + String(p2));      
+  Serial.print("HTTP Response code: ");
+  Serial.println(httpResponseCode);
+
+  http.end();
+
+  delay(10);
+  digitalWrite(greenLEDpin, HIGH);
+
 }
 
 void wipeEEPROM() {

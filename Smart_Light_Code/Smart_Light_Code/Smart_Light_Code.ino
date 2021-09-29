@@ -56,6 +56,8 @@ void setup()
   //set power indicator on
   digitalWrite(redLEDpin, HIGH);
 
+  analogWriteRange(255);
+
 
   //check if setup byte is set
   if (EEPROM.read(0) == char(7)) {
@@ -294,7 +296,40 @@ void connectToSavedNetwork() {
   //Now we are connected to the saved AP.
 }
 
-void handleAction() {
-  Serial.println("HANDLE ACTION");
+void handleAction(){
+    Serial.println("ACTION DETECTED");
+    
+    if (server.hasArg("plain")== false){ //Check if body received
+           server.send(400, "text/plain", "fail");
+           Serial.println("400 fail");
+           return;
+    }
+    
+    server.send(200, "text/plain", "success");
 
+    String message = server.arg("plain");
+        //SAMPLE
+        // #95$100
+
+     int brightness = message.substring(1, message.indexOf('$')).toInt();
+     int warmth = message.substring(message.indexOf('$')+1).toInt();
+
+      Serial.println("MESSAGE:");
+      Serial.println(message);
+            
+      Serial.println("bright:");
+      Serial.println(brightness);
+      
+      Serial.println("warmth:");
+      Serial.println(warmth);
+
+      Serial.println("out1:");
+      Serial.println(brightness/100.0*255);
+
+      Serial.println("out2:");
+      Serial.println(warmth/100.0*255);
+    
+     analogWrite(out1pin, brightness/100*255);
+     analogWrite(out2pin, warmth/100*255);
+    
 }

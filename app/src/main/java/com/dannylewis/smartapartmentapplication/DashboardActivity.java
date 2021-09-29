@@ -30,6 +30,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DashboardActivity extends AppCompatActivity {
     private SeekBar brightSeek;
@@ -40,6 +42,9 @@ public class DashboardActivity extends AppCompatActivity {
     private short curWarmth = 0;
     private short curBrightness = 0;
     private short curPos = 0;
+    private int tempW = 0;
+    private int tempB = 0;
+    private int tempP = 0;
 
 
 
@@ -102,10 +107,17 @@ public class DashboardActivity extends AppCompatActivity {
                 progressChangedValue = progress;
                 curBrightness = (short)progressChangedValue;
 
-                try {
-                    changeBrightness((short)progressChangedValue);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (tempB == -1) {
+                    tempB = curBrightness;
+                }
+
+                if (Math.abs(tempB-curBrightness) > 5) {
+                    tempB = curBrightness;
+                    try {
+                        changeBrightness(curBrightness);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 //Handle dynamic bulb
@@ -117,9 +129,20 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
+                tempB = -1;
             }
 
             public void onStopTrackingTouch(SeekBar seekBar) {
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        try {
+                            changeBrightness((short)progressChangedValue);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 300);
             }
         });
 
@@ -129,12 +152,18 @@ public class DashboardActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
                 curWarmth = (short)progressChangedValue;
-                try {
-                    changeWarmth(progressChangedValue);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (tempW == -1) {
+                    tempW = curWarmth;
                 }
 
+                if (Math.abs(tempW-curBrightness) > 5) {
+                    tempW = curWarmth;
+                    try {
+                        changeWarmth(curWarmth);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 //Handle dynamic bulb
                 String rVal = "FF";
                 String gVal = Integer.toHexString((int)(255-(progressChangedValue*.6)));
@@ -143,9 +172,21 @@ public class DashboardActivity extends AppCompatActivity {
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
+                tempW = -1;
             }
 
             public void onStopTrackingTouch(SeekBar seekBar) {
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        try {
+                            changeWarmth((short)curWarmth);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 300);
+
             }
         });
 
@@ -156,17 +197,36 @@ public class DashboardActivity extends AppCompatActivity {
                 progressChangedValue = progress;
                 curPos = (short)progressChangedValue;
                 updateShadeImage(progressChangedValue, setDashWin);
-                try {
-                    changeShadePosition(progressChangedValue);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+                if (tempP == -1) {
+                    tempP = curPos;
+                }
+
+                if (Math.abs(tempP -curPos) > 5) {
+                    tempP = curPos;
+                    try {
+                        changeShadePosition(curPos);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
+                tempP = -1;
             }
 
             public void onStopTrackingTouch(SeekBar seekBar) {
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        try {
+                            changeShadePosition((short)curPos);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 300);
             }
         });
 

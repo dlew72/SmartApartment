@@ -19,6 +19,8 @@ public class ActionClass {
     }
 
     public String convertActionToString() {
+        //SAMPLE
+        // N0930L050100
         String actionString = "";
         actionString += weekday;
         if (hour < 10)
