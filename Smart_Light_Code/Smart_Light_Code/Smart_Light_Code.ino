@@ -58,6 +58,8 @@ void setup()
 
   analogWriteRange(255);
 
+  analogWriteFreq(150);
+
 
   //check if setup byte is set
   if (EEPROM.read(0) == char(7)) {
@@ -329,7 +331,7 @@ void handleAction(){
       Serial.println("out2:");
       Serial.println(warmth/100.0*255);
     
-     analogWrite(out1pin, brightness/100*255);
-     analogWrite(out2pin, warmth/100*255);
+     analogWrite(out1pin, brightness/100.0*255);
+     analogWrite(out2pin, warmth/100.0*255);
     
 }

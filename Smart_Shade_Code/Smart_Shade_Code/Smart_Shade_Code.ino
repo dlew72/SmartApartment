@@ -56,6 +56,10 @@ void setup()
   //set power indicator on
   digitalWrite(redLEDpin, HIGH);
 
+  analogWriteRange(255);
+
+  analogWriteFreq(150);
+
 
   //check if setup byte is set
   if (EEPROM.read(0) == char(7)) {
@@ -321,6 +325,6 @@ void handleAction(){
       Serial.println(pos/100.0*255);
 
     
-     analogWrite(out1pin, pos/100*255);
+     analogWrite(out1pin, pos/100.0*255);
     
 }

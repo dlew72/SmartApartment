@@ -32,6 +32,7 @@ void handleRoot();
 void handleNotFound();
 void handleSchedule();
 void handleAction();
+void handleGetState();
 
 
 // misc function prototypes
@@ -321,6 +322,11 @@ void connectToSavedNetwork() {
     }
 
     //Now we are connected to the saved AP.
+}
+
+void handleGetState() {
+  //App requests current device values to initialize sliders on dashboard
+  
 }
 
 void shareCredentials(String ssid, String pass) {

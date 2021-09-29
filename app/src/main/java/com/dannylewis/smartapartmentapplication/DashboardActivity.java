@@ -111,7 +111,7 @@ public class DashboardActivity extends AppCompatActivity {
                     tempB = curBrightness;
                 }
 
-                if (Math.abs(tempB-curBrightness) > 5) {
+                if (Math.abs(tempB-curBrightness) > 20) {
                     tempB = curBrightness;
                     try {
                         changeBrightness(curBrightness);
@@ -156,7 +156,7 @@ public class DashboardActivity extends AppCompatActivity {
                     tempW = curWarmth;
                 }
 
-                if (Math.abs(tempW-curBrightness) > 5) {
+                if (Math.abs(tempW-curWarmth) > 20) {
                     tempW = curWarmth;
                     try {
                         changeWarmth(curWarmth);
@@ -202,7 +202,7 @@ public class DashboardActivity extends AppCompatActivity {
                     tempP = curPos;
                 }
 
-                if (Math.abs(tempP -curPos) > 5) {
+                if (Math.abs(tempP -curPos) > 20) {
                     tempP = curPos;
                     try {
                         changeShadePosition(curPos);
