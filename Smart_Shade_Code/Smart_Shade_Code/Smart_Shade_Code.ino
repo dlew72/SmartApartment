@@ -16,18 +16,17 @@ bool operationMode = false;
 
 //pin assignments
 int greenLEDpin = 12;
+int out2pin = 4;
+int out1pin = 5;
 int redLEDpin = 13;
 int hardResetButton = 15;
 
-//hardcoded peripheral IPs
-String shadeServerIP = "http://192.168.0.178/";
-String shadeServerIPSetup = "http://192.168.4.178/";
-
-String lightServerIP = "http://192.168.0.179/";
-String lightServerIPSetup = "http://192.168.4.179/";
-
+//hardcoded smart device IPs
+String hubServerIP = "https://192.168.0.177/";
 
 // function prototypes for HTTP handlers
+void handleCredentials();
+void handleAction();
 void handleRoot();              
 void handleNotFound();
 
@@ -36,7 +35,6 @@ void hubSetupMode();
 void connectToSavedNetwork();
 void readEEPROM();
 void wipeEEPROM();
-void shareCredentials(String, String);
 
 // software reset function
 void(* resetFunc) (void) = 0;
@@ -45,12 +43,14 @@ void(* resetFunc) (void) = 0;
 void setup()
 {
   Serial.begin(115200);
-  Serial.println("Fresh Run");
+  Serial.println("Fresh Run -- shade");
   EEPROM.begin(1024);
 
   //set pinmodes
   pinMode(greenLEDpin, OUTPUT);
   pinMode(redLEDpin, OUTPUT);
+  pinMode(out1pin, OUTPUT);
+  pinMode(out2pin, OUTPUT);
   pinMode(hardResetButton, INPUT);
 
   //set power indicator on
@@ -59,19 +59,21 @@ void setup()
 
   //check if setup byte is set
   if (EEPROM.read(0) == char(7)) {
-    //hub was already configured. attempt to connect to network
-    connectToSavedNetwork();    
+      Serial.println("7 BIT SET");
+    //connection settings already configured. attempt to connect to network
+    connectToSavedNetwork();
     operationMode = true;
   }
   else {
     //No saved credentials. Enter setup mode
-    hubSetupMode();
+    Serial.println("7 BIT NOT SET");
+
+    shadeSetupMode();
   }
 
   //HTTP handlers
   server.on("/", handleRoot);                      // Call the 'handleRoot' function when a client requests URI "/"
   server.on("/credentials", handleCredentials);    // Call the 'handleCredentials' function when a client requests URI "/credentials"
-  server.on("/schedule", handleSchedule);       // Call the 'handleSchedule' function when a client requests URI "/schedule"
   server.on("/action", handleAction);         // Call the 'handleAction' function when a client requests URI "/action"
   server.onNotFound(handleNotFound);        // When a client requests an unknown URI (i.e. something other than "/"), call function "handleNotFound"
 
@@ -100,7 +102,7 @@ void loop()
 
 void handleRoot() {
   Serial.println("ROOT");
-  server.send(200, "text/plain", "Hello world 123!");   // Send HTTP status 200 (Ok) and send some text to the browser/client
+  server.send(200, "text/plain", "Hello world 456!");   // Send HTTP status 200 (Ok) and send some text to the browser/client
 }
 
 void handleCredentials() {
@@ -118,11 +120,19 @@ void handleCredentials() {
       addr++;
       
       String message = server.arg("plain");
+
+      //credentials are shared as such:
+      // "ssid":d@nnyl3w!$@%!$@@:"pass"
       
-      String username = message.substring(9, message.indexOf("\",\"p$$$\":\""));
+      String username = message.substring(0, message.indexOf(":d@nnyl3w!$@%!$@@:"));
 
-      String password = message.substring(message.indexOf("p$$$")+7, message.length()-2);
+      String password = message.substring(message.indexOf(":d@nnyl3w!$@%!$@@:")+18, message.length());
+      Serial.println("ssid: ");
+      Serial.println(username);
 
+      Serial.println("password: ");
+      Serial.println(password);
+      
       EEPROM.put(addr, username.length());
       addr++;
 
@@ -141,12 +151,9 @@ void handleCredentials() {
 
       EEPROM.commit();
 
-      //Share credentials with lights and shade
-      shareCredentials(username, password);
-
       //Try to use credentials to connect:
       WiFi.mode(WIFI_STA);
-      IPAddress ip(192, 168, 0, 177);
+      IPAddress ip(192, 168, 0, 178);
       IPAddress dns(192, 168, 0, 1);
       IPAddress gateway(192, 168, 0, 1);
       IPAddress subnet(255, 255, 255, 0);
@@ -186,30 +193,57 @@ void handleNotFound(){
 }
 
 void wipeEEPROM() {
+  Serial.println("WIPE EEPROM");
 
   EEPROM.write(0, char(0));
   EEPROM.commit();
 }
 
 void readEEPROM() {
+  Serial.println("READ EEPROM");
+
   for (int i = 0; i < 100; i++)
    Serial.print(EEPROM.read(i));
 }
 
-void hubSetupMode() {
-    Serial.print("Setting soft-AP ... ");
-    boolean result = WiFi.softAP("ECE Smart Hub", "seniordesign");
-    if(result == true)
-    {
-      Serial.println("Ready");
-      LLMNR.begin("esp8266");
-      Serial.println("LLMNR responder started");
+void shadeSetupMode() {
+    Serial.println("SHADE SETUP MODE");
+
+    //autoconnect to hub
+    IPAddress ip(192, 168, 4, 178);
+    IPAddress dns(192, 168, 4, 1);
+    IPAddress gateway(192, 168, 4, 1);
+    IPAddress subnet(255, 255, 255, 0);
+
+    //Configure WiFi with above parameters
+    WiFi.config(ip, dns, gateway, subnet);
+
+    //Attempt connection
+    WiFi.mode(WIFI_STA);
+    WiFi.begin("ECE Smart Hub", "seniordesign");
+
+    while (WiFi.status() != WL_CONNECTED) {
+      Serial.println("connection failed, trying again");
+
+      //While we aren't connected to hub, flash red indicator light 
+        digitalWrite(redLEDpin, !digitalRead(redLEDpin));
+
+        //Check to see if hard reset button is pressed
+        if (digitalRead(hardResetButton) == HIGH) {
+            Serial.println("WIPING EEPROM");
+            wipeEEPROM();
+            resetFunc();
+          }
+          
+        delay(500);
     }
-  else
-    Serial.println("Failure to set up Soft-AP");
+      Serial.println("we are connected to hub");
+
 }
 
 void connectToSavedNetwork() {
+  Serial.println("CONNECT TO SAVED NETWORK");
+
     //Supposedly set up already. Try connecting to network
     String ssid = "";
     String password = "";
@@ -231,7 +265,7 @@ void connectToSavedNetwork() {
     //Serial.println("Password: " + password);
 
     //Hardcode IP data for now
-    IPAddress ip(192, 168, 0, 177);
+    IPAddress ip(192, 168, 0, 178);
     IPAddress dns(192, 168, 0, 1);
     IPAddress gateway(192, 168, 0, 1);
     IPAddress subnet(255, 255, 255, 0);
@@ -243,9 +277,9 @@ void connectToSavedNetwork() {
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     
-    while (WiFi.status() != WL_CONNECTED) {
-      //While we aren't connected, flash red indicator light 
-        digitalWrite(redLEDpin, !digitalRead(redLEDpin));
+    while (WiFi.status() == WL_CONNECTED) {
+      //While we aren't connected, flash green indicator light 
+        digitalWrite(greenLEDpin, !digitalRead(greenLEDpin));
 
         //Check to see if hard reset button is pressed
         if (digitalRead(hardResetButton) == HIGH) {
@@ -260,33 +294,7 @@ void connectToSavedNetwork() {
     //Now we are connected to the saved AP.
 }
 
-void shareCredentials(String ssid, String pass) {
+void handleAction() {
+  Serial.println("HANDLE ACTION");
 
-  WiFiClient cli;
-  HTTPClient http;
-  int httpResponseCode;
-
-  http.begin(cli, shadeServerIPSetup + "credentials");
-
-  http.addHeader("Content-Type", "text/plain");
-
-  httpResponseCode = http.POST(ssid + ":d@nnyl3w!$@%!$@@:" + pass);      
-  Serial.print("HTTP Response code: ");
-  Serial.println(httpResponseCode);
-
-  http.end();
-
-  http.begin(cli, lightServerIPSetup + "credentials");
-
-  http.addHeader("Content-Type", "text/plain");
-
-  httpResponseCode = http.POST(ssid + ":d@nnyl3w!$@%!$@@:" + pass);      
-  Serial.print("HTTP Response code: ");
-  Serial.println(httpResponseCode);
-
-  http.end();
-
-  
-
-  
 }

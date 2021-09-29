@@ -2,7 +2,9 @@ package com.dannylewis.smartapartmentapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,12 +15,32 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+
 public class DashboardActivity extends AppCompatActivity {
     private SeekBar brightSeek;
     private SeekBar warmthSeek;
     private View lightOpac;
     private ImageView setDashLight;
     private ImageView setDashWin;
+    private short curWarmth = 0;
+    private short curBrightness = 0;
+    private short curPos = 0;
+
 
 
     //Shade:
@@ -78,7 +100,13 @@ public class DashboardActivity extends AppCompatActivity {
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
-                changeBrightness(progressChangedValue);
+                curBrightness = (short)progressChangedValue;
+
+                try {
+                    changeBrightness((short)progressChangedValue);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 //Handle dynamic bulb
                 if (progressChangedValue == 0)
@@ -100,7 +128,12 @@ public class DashboardActivity extends AppCompatActivity {
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
-                changeWarmth(progressChangedValue);
+                curWarmth = (short)progressChangedValue;
+                try {
+                    changeWarmth(progressChangedValue);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 //Handle dynamic bulb
                 String rVal = "FF";
@@ -121,8 +154,13 @@ public class DashboardActivity extends AppCompatActivity {
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
+                curPos = (short)progressChangedValue;
                 updateShadeImage(progressChangedValue, setDashWin);
-                changeShadePosition(progressChangedValue);
+                try {
+                    changeShadePosition(progressChangedValue);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -182,20 +220,94 @@ public class DashboardActivity extends AppCompatActivity {
         readOut.setText(xx + " lux");
     }
 
-    void changeBrightness(int newValue) {
+    void changeBrightness(short newValue) throws JSONException {
         //TODO: send newValue to arduino
+        //char wd, short h, short m, char aT, short p1, short p2) {
+        ActionClass tempAction = new ActionClass('X', (short) 0, (short) 0, 'L', newValue, curWarmth);
+
+        sendPacket(tempAction);
+
+        tempAction = null;
     }
 
-    void changeWarmth(int newValue) {
+    void changeWarmth(int newValue) throws JSONException {
         //TODO: send newValue to arduino
+        //char wd, short h, short m, char aT, short p1, short p2) {
+        ActionClass tempAction = new ActionClass('X', (short) 0, (short) 0, 'L', curBrightness, (short)newValue);
+
+        sendPacket(tempAction);
+
+        tempAction = null;
+
     }
 
-    void changeShadePosition(int newValue) {
+    void changeShadePosition(int newValue) throws JSONException {
         //TODO: send newValue to arduino
+        //char wd, short h, short m, char aT, short p1, short p2) {
+        ActionClass tempAction = new ActionClass('X', (short) 0, (short) 0, 'S', (short)newValue, (short)0);
+
+        sendPacket(tempAction);
+
+        tempAction = null;
     }
 
     @Override
     public void onBackPressed() {
         //Do nothing if back button is pressed on dashboard
+    }
+
+    void sendPacket(ActionClass myAction) throws JSONException {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url ="http://192.168.0.177"; //hardcoded hub ip
+
+        JSONObject jsonBody = new JSONObject();
+        jsonBody.put("a###", myAction.convertActionToString());
+        final String requestBody = jsonBody.toString();
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url+"/action",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("VOLLEY", response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("VOLLEY", error.toString());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String responseString = "";
+                if (response != null) {
+                    responseString = String.valueOf(response.statusCode);
+                    if (responseString.equals("200")) {
+
+
+                    }
+                }
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            }
+        };
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 }
