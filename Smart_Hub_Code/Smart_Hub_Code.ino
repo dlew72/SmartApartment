@@ -244,7 +244,6 @@ void sendAction(String ip, int p1, int p2) {
 
   http.end();
 
-  delay(10);
   digitalWrite(greenLEDpin, HIGH);
 
 }
