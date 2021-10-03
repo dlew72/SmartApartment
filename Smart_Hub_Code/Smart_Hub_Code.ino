@@ -345,6 +345,8 @@ void shareCredentials(String ssid, String pass) {
 
   http.end();
 
+  delay(500);
+
   http.begin(cli, lightServerIPSetup + "credentials");
 
   http.addHeader("Content-Type", "text/plain");
