@@ -42,6 +42,9 @@ void readEEPROM();
 void wipeEEPROM();
 void shareCredentials(String, String);
 
+//Interrupt
+ICACHE_RAM_ATTR void resetButtonPressed();
+
 // software reset function
 void(* resetFunc) (void) = 0;
 
@@ -56,6 +59,10 @@ void setup()
   pinMode(greenLEDpin, OUTPUT);
   pinMode(redLEDpin, OUTPUT);
   pinMode(hardResetButton, INPUT);
+
+  //set up interrupt
+  attachInterrupt(digitalPinToInterrupt(hardResetButton), resetButtonPressed, RISING);
+  
 
   //set power indicator on
   digitalWrite(redLEDpin, HIGH);
@@ -93,12 +100,6 @@ void loop()
     digitalWrite(greenLEDpin, HIGH);
   else
     digitalWrite(greenLEDpin, LOW);
-
-  if (digitalRead(hardResetButton) == HIGH) {
-    Serial.println("WIPING EEPROM");
-    wipeEEPROM();
-    resetFunc();
-  }
 
 }
 
@@ -311,13 +312,6 @@ void connectToSavedNetwork() {
       //While we aren't connected, flash red indicator light 
         digitalWrite(redLEDpin, !digitalRead(redLEDpin));
 
-        //Check to see if hard reset button is pressed
-        if (digitalRead(hardResetButton) == HIGH) {
-            Serial.println("WIPING EEPROM");
-            wipeEEPROM();
-            resetFunc();
-          }
-          
         delay(500);
     }
 
@@ -357,7 +351,11 @@ void shareCredentials(String ssid, String pass) {
 
   http.end();
 
-  
+   
+}
 
-  
+ICACHE_RAM_ATTR void resetButtonPressed() {
+    Serial.println("WIPING EEPROM");
+    wipeEEPROM();
+    resetFunc();
 }

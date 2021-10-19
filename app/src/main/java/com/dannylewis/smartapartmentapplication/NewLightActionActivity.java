@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import java.util.Map;
 
+import static com.dannylewis.smartapartmentapplication.SchedulerDashActivity.syncSchedule;
+
 public class NewLightActionActivity extends AppCompatActivity {
 
     TextView warmthReadout;
@@ -196,6 +198,8 @@ public class NewLightActionActivity extends AppCompatActivity {
             sharedPref.edit().putString("$" + nextId, newSatAction.convertActionToString()).commit();
         }
 
+        syncSchedule(sharedPref);
+
         Intent intent = new Intent(this, LightSchedulerActivity.class);
         startActivity(intent);
 
@@ -219,4 +223,5 @@ public class NewLightActionActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
 }

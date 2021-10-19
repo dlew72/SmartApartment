@@ -36,6 +36,9 @@ void connectToSavedNetwork();
 void readEEPROM();
 void wipeEEPROM();
 
+//Interrupt
+ICACHE_RAM_ATTR void resetButtonPressed();
+
 // software reset function
 void(* resetFunc) (void) = 0;
 
@@ -52,6 +55,10 @@ void setup()
   pinMode(out1pin, OUTPUT);
   pinMode(out2pin, OUTPUT);
   pinMode(hardResetButton, INPUT);
+
+  //set up interrupt
+  attachInterrupt(digitalPinToInterrupt(hardResetButton), resetButtonPressed, RISING);
+  
 
   //set power indicator on
   digitalWrite(redLEDpin, HIGH);
@@ -95,12 +102,6 @@ void loop()
     digitalWrite(greenLEDpin, HIGH);
   else
     digitalWrite(greenLEDpin, LOW);
-
-  if (digitalRead(hardResetButton) == HIGH) {
-    Serial.println("WIPING EEPROM");
-    wipeEEPROM();
-    resetFunc();
-  }
 
 }
 
@@ -231,14 +232,6 @@ void shadeSetupMode() {
 
       //While we aren't connected to hub, flash red indicator light 
         digitalWrite(redLEDpin, !digitalRead(redLEDpin));
-
-        //Check to see if hard reset button is pressed
-        if (digitalRead(hardResetButton) == HIGH) {
-            Serial.println("WIPING EEPROM");
-            wipeEEPROM();
-            resetFunc();
-          }
-          
         delay(500);
     }
       Serial.println("we are connected to hub");
@@ -284,13 +277,6 @@ void connectToSavedNetwork() {
     while (WiFi.status() == WL_CONNECTED) {
       //While we aren't connected, flash green indicator light 
         digitalWrite(greenLEDpin, !digitalRead(greenLEDpin));
-
-        //Check to see if hard reset button is pressed
-        if (digitalRead(hardResetButton) == HIGH) {
-            Serial.println("WIPING EEPROM");
-            wipeEEPROM();
-            resetFunc();
-          }
           
         delay(500);
     }
@@ -327,4 +313,10 @@ void handleAction(){
     
      analogWrite(out1pin, pos/100.0*255);
     
+}
+
+ICACHE_RAM_ATTR void resetButtonPressed() {
+    Serial.println("WIPING EEPROM");
+    wipeEEPROM();
+    resetFunc();
 }

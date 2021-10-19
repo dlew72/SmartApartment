@@ -46,6 +46,12 @@ public class DashboardActivity extends AppCompatActivity {
     private int tempB = 0;
     private int tempP = 0;
 
+    private int minBright = 0;
+    private int maxBright = 100;
+    private int minWarmth = 0;
+    private int maxWarmth = 100;
+    private int minShade = 0;
+    private int maxShade = 100;
 
 
     //Shade:
@@ -59,6 +65,16 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        //Load settings
+        {
+            SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
+            minBright = sharedPref.getInt("minBright", 0);
+            maxBright = sharedPref.getInt("maxBright", 100);
+            minWarmth = sharedPref.getInt("minWarmth", 0);
+            maxWarmth = sharedPref.getInt("maxWarmth", 100);
+            minShade = sharedPref.getInt("minShade", 0);
+            maxShade = sharedPref.getInt("maxShade", 100);
+        }
         //Find views by ID
         {
             //Light
@@ -281,7 +297,12 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     void changeBrightness(short newValue) throws JSONException {
-        //TODO: send newValue to arduino
+        SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
+        minBright = sharedPref.getInt("minBright", 0);
+        maxBright = sharedPref.getInt("maxBright", 100);
+        int actualBrightnessScale = (maxBright - minBright);
+        newValue = (short) (newValue/100.0*actualBrightnessScale + minBright);
+
         //char wd, short h, short m, char aT, short p1, short p2) {
         ActionClass tempAction = new ActionClass('X', (short) 0, (short) 0, 'L', newValue, curWarmth);
 
@@ -291,7 +312,12 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     void changeWarmth(int newValue) throws JSONException {
-        //TODO: send newValue to arduino
+        SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
+        minWarmth = sharedPref.getInt("minWarmth", 0);
+        maxWarmth = sharedPref.getInt("maxWarmth", 100);
+        int actualWarmthScale = (maxWarmth - minWarmth);
+        newValue = (short) (newValue/100.0*actualWarmthScale + minWarmth);
+
         //char wd, short h, short m, char aT, short p1, short p2) {
         ActionClass tempAction = new ActionClass('X', (short) 0, (short) 0, 'L', curBrightness, (short)newValue);
 
@@ -302,7 +328,13 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     void changeShadePosition(int newValue) throws JSONException {
-        //TODO: send newValue to arduino
+
+        SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
+        minShade = sharedPref.getInt("minShade", 0);
+        maxShade = sharedPref.getInt("maxShade", 100);
+        int actualShadeScale = (maxShade - minShade);
+        newValue = (short) (newValue/100.0*actualShadeScale + minShade);
+
         //char wd, short h, short m, char aT, short p1, short p2) {
         ActionClass tempAction = new ActionClass('X', (short) 0, (short) 0, 'S', (short)newValue, (short)0);
 

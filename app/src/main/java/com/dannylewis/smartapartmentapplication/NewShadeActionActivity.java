@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import java.util.Map;
 
+import static com.dannylewis.smartapartmentapplication.SchedulerDashActivity.syncSchedule;
+
 public class NewShadeActionActivity extends AppCompatActivity {
 
     TextView posReadout;
@@ -171,6 +173,8 @@ public class NewShadeActionActivity extends AppCompatActivity {
             ActionClass newSatAction = new ActionClass('A', hour, minute, 'S', pos, (short)0);
             sharedPref.edit().putString("$" + nextId, newSatAction.convertActionToString()).commit();
         }
+
+        syncSchedule(sharedPref);
 
         Intent intent = new Intent(this, ShadeSchedulerActivity.class);
         startActivity(intent);

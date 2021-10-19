@@ -2,9 +2,14 @@ package com.dannylewis.smartapartmentapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+
+import java.util.Map;
 
 public class SchedulerDashActivity extends AppCompatActivity {
 
@@ -37,5 +42,16 @@ public class SchedulerDashActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
+    }
+
+    public static void syncSchedule(SharedPreferences sP) {
+        //Send schedule from shared prefs to Hub
+        Log.d("map values1", "\n*********\n");
+        Map<String, ?> allEntries = sP.getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Log.d("map values1", entry.getKey() + ": " + entry.getValue().toString());
+        }
+        Log.d("map values1", "\n*********\n");
+
     }
 }
