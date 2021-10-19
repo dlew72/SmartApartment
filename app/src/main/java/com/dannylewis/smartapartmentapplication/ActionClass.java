@@ -37,7 +37,7 @@ public class ActionClass {
         actionString += param1;
         if (param2 < 10)
             actionString += "0";
-        if (param2 < 10)
+        if (param2 < 100)
             actionString += "0";
         actionString += param2;
 

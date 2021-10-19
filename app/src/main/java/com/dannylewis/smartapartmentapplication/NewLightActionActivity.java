@@ -16,9 +16,9 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.Map;
+import org.json.JSONException;
 
-import static com.dannylewis.smartapartmentapplication.SchedulerDashActivity.syncSchedule;
+import java.util.Map;
 
 public class NewLightActionActivity extends AppCompatActivity {
 
@@ -146,7 +146,7 @@ public class NewLightActionActivity extends AppCompatActivity {
 
     }
 
-    public void createAction(View view) {
+    public void createAction(View view) throws JSONException {
         SharedPreferences sharedPref = getSharedPreferences("ACTIONS", Context.MODE_PRIVATE);
         // Actions are stored in shared preferences in the following format:
         // Key: $[id]
@@ -198,7 +198,9 @@ public class NewLightActionActivity extends AppCompatActivity {
             sharedPref.edit().putString("$" + nextId, newSatAction.convertActionToString()).commit();
         }
 
-        syncSchedule(sharedPref);
+        ScheduleSyncHelper myHelper = new ScheduleSyncHelper(sharedPref, this);
+
+        myHelper.syncSchedule();
 
         Intent intent = new Intent(this, LightSchedulerActivity.class);
         startActivity(intent);

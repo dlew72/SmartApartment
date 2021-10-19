@@ -12,9 +12,9 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.Map;
+import org.json.JSONException;
 
-import static com.dannylewis.smartapartmentapplication.SchedulerDashActivity.syncSchedule;
+import java.util.Map;
 
 public class NewShadeActionActivity extends AppCompatActivity {
 
@@ -123,7 +123,7 @@ public class NewShadeActionActivity extends AppCompatActivity {
 
     }
 
-    public void createAction(View view) {
+    public void createAction(View view) throws JSONException {
         SharedPreferences sharedPref = getSharedPreferences("ACTIONS", Context.MODE_PRIVATE);
         // Actions are stored in shared preferences in the following format:
         // Key: $[id]
@@ -174,7 +174,9 @@ public class NewShadeActionActivity extends AppCompatActivity {
             sharedPref.edit().putString("$" + nextId, newSatAction.convertActionToString()).commit();
         }
 
-        syncSchedule(sharedPref);
+        ScheduleSyncHelper myHelper = new ScheduleSyncHelper(sharedPref, this);
+
+        myHelper.syncSchedule();
 
         Intent intent = new Intent(this, ShadeSchedulerActivity.class);
         startActivity(intent);

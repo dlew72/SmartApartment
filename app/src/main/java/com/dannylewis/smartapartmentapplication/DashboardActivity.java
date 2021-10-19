@@ -65,6 +65,15 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        SharedPreferences sP = getSharedPreferences("ACTIONS", Context.MODE_PRIVATE);
+        ScheduleSyncHelper myHelper = new ScheduleSyncHelper(sP, this);
+
+        try {
+            myHelper.syncSchedule();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         //Load settings
         {
             SharedPreferences sharedPref = getSharedPreferences("SETTINGS", Context.MODE_PRIVATE);
