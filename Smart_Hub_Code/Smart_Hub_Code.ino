@@ -191,7 +191,60 @@ void handleNotFound(){
 }
 
 void handleSchedule() {
+  Serial.println("SCHEDULE DETECTED");
+  if (server.hasArg("plain")== false){ //Check if body received
+           server.send(400, "text/plain", "fail");
+           Serial.println("400 fail");
+           return;
+    }
+    
+    server.send(200, "text/plain", "success");
 
+    String message = server.arg("plain");
+
+    Serial.println("MESSAGE:");
+    Serial.println(message);
+
+    int numberSchedules = message.length()/12;
+
+//"M0830L100000X"
+    addr = 129;
+    String temp = "";
+    String finalThing = "";
+    for (int action = 0; action < numberSchedules; action++) { 
+      finalThing = message[action*12];
+      EEPROM.put(addr, message[action*12]);
+      addr++;
+      temp = (message[action*12 + 1] + message[action*12+2]);
+      finalThing += temp.toInt();
+      EEPROM.put(addr, temp.toInt());
+      addr++;
+      temp = (message[action*12 + 3] + message[action*12+4]);
+      finalThing += temp.toInt();
+      EEPROM.put(addr, temp.toInt());
+      addr++;
+      finalThing += message[action*12 + 5];
+      EEPROM.put(addr, message[action*12 + 5]);
+      addr++;
+      temp = (message[action*12 + 6] + message[action*12+7] + message[action*12+8]);
+      finalThing += temp.toInt();
+      EEPROM.put(addr, temp.toInt());
+      addr++;
+      temp = (message[action*12 + 9] + message[action*12+10] + message[action*12+11]);
+      finalThing += temp.toInt();
+      EEPROM.put(addr, temp.toInt());
+      addr++;
+
+      Serial.println("Final thing: " + finalThing);
+    }
+
+    for (int i = 0; i < 13; i++) {
+      EEPROM.put(addr, 'X');
+      addr++;
+    }
+    EEPROM.commit();
+
+    readEEPROM();
 }
 
 void handleAction(){
@@ -257,8 +310,13 @@ void wipeEEPROM() {
 }
 
 void readEEPROM() {
-  for (int i = 0; i < 100; i++)
-   Serial.print(EEPROM.read(i));
+  for (int i = 0; i < 256; i++) {
+     Serial.print("i = ");
+     Serial.print(i);
+     Serial.print(": ");
+     Serial.print(EEPROM.read(i));
+     Serial.print("\n");
+  }
 }
 
 void hubSetupMode() {
