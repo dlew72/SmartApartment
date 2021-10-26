@@ -202,8 +202,12 @@ void handleSchedule() {
 
     String message = server.arg("plain");
 
+    message = message.substring(13, message.length()-2);
+
+
     Serial.println("MESSAGE:");
     Serial.println(message);
+
 
     int numberSchedules = message.length()/12;
 
@@ -212,30 +216,40 @@ void handleSchedule() {
     String temp = "";
     String finalThing = "";
     for (int action = 0; action < numberSchedules; action++) { 
+      
       finalThing = message[action*12];
       EEPROM.put(addr, message[action*12]);
       addr++;
-      temp = (message[action*12 + 1] + message[action*12+2]);
+      
+      temp = message[action*12 + 1];
+      temp.concat(message[action*12+2]);
       finalThing += temp.toInt();
       EEPROM.put(addr, temp.toInt());
       addr++;
-      temp = (message[action*12 + 3] + message[action*12+4]);
+      
+      temp = message[action*12 + 3];
+      temp.concat(message[action*12+4]);
       finalThing += temp.toInt();
       EEPROM.put(addr, temp.toInt());
       addr++;
+      
       finalThing += message[action*12 + 5];
       EEPROM.put(addr, message[action*12 + 5]);
       addr++;
-      temp = (message[action*12 + 6] + message[action*12+7] + message[action*12+8]);
+      
+      temp = message[action*12 + 6];
+      temp.concat(message[action*12+7]);
+      temp.concat(message[action*12+8]);
       finalThing += temp.toInt();
       EEPROM.put(addr, temp.toInt());
       addr++;
-      temp = (message[action*12 + 9] + message[action*12+10] + message[action*12+11]);
+      
+      temp = message[action*12 + 9];
+      temp.concat(message[action*12+10]);
+      temp.concat(message[action*12+11]);
       finalThing += temp.toInt();
       EEPROM.put(addr, temp.toInt());
       addr++;
-
-      Serial.println("Final thing: " + finalThing);
     }
 
     for (int i = 0; i < 13; i++) {
@@ -314,7 +328,10 @@ void readEEPROM() {
      Serial.print("i = ");
      Serial.print(i);
      Serial.print(": ");
-     Serial.print(EEPROM.read(i));
+     Serial.print(int(EEPROM.read(i)));
+     Serial.print(", ");
+     Serial.print(char(EEPROM.read(i)));
+
      Serial.print("\n");
   }
 }
