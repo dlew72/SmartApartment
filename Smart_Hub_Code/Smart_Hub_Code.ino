@@ -12,11 +12,23 @@ ESP8266WebServer server(80);    // Create a webserver object that listens for HT
 //EEPROM Address index
 int addr = 0;
 
-//Recently sent scheduled actions (based on addr)
-int addrList[10];
+//to ensure schedule is only checked once a minute
+int prevMin = -1;
 
 //RTC
 RTC_DS3231 rtc;
+
+//RTC comparison helper
+char daysOfTheWeek[] = {'U', 'M', 'T', 'W', 'R', 'F', 'A'};
+
+struct action {
+  char dow;
+  int h;
+  int m;
+  char type;
+  int par1;
+  int par2;
+};
 
 //setup or operation flag
 bool operationMode = false;
@@ -48,6 +60,8 @@ void connectToSavedNetwork();
 void readEEPROM();
 void wipeEEPROM();
 void shareCredentials(String, String);
+bool checkSchedValid();
+void checkSchedule(DateTime);
 
 //Interrupt
 ICACHE_RAM_ATTR void resetButtonPressed();
@@ -61,9 +75,8 @@ void setup()
   Serial.begin(115200);
   Serial.println("Fresh Run");
   EEPROM.begin(1024);
+  rtc.begin();
 
-  //wipe addrList
-  wipeAddrList();
 
   //set pinmodes
   pinMode(greenLEDpin, OUTPUT);
@@ -110,27 +123,44 @@ void loop()
     digitalWrite(greenLEDpin, HIGH);
   else
     digitalWrite(greenLEDpin, LOW);
-
-  checkSchedule();
-
+    
+  DateTime now = rtc.now();
+  if (prevMin != now.minute()) {
+    prevMin = now.minute();
+    checkSchedule(now);
+  }
 }
 
-void wipeAddrList() {
-  for (int i = 0; i < 10; i++)
-    addrList[i] = -1;
+
+bool checkSchedValid() {
+  addr = 129;
+  if (char(EEPROM.read(addr)) == 'U' || char(EEPROM.read(addr)) == 'M' || char(EEPROM.read(addr)) == 'T' || char(EEPROM.read(addr)) == 'W' || char(EEPROM.read(addr)) == 'R' || char(EEPROM.read(addr)) == 'F' || char(EEPROM.read(addr)) == 'A')
+    return true;
+  return false;
 }
 
-void checkSchedule() {
+void checkSchedule(DateTime now) {
 
-   DateTime now = rtc.now();
-   
-   char DOW = EEPROM.read(129);
-   while (DOW != 'X') {
-    //Check day of week, then hour, then minute
-    //If all match, send action and add action addr to recent list
-    if (DOW == 
+   if (!checkSchedValid())
+    return;
+        
+   addr = 129;
+   action myAct = {char(EEPROM.read(addr)), int(EEPROM.read(addr+1)), int(EEPROM.read(addr+2)), char(EEPROM.read(addr+3)), int(EEPROM.read(addr+4)), int(EEPROM.read(addr+5))};
+      
+   while (myAct.dow != 'X') {
+      //Check day of week, then hour, then minute
+      //If all match, send action and add action addr to recent list
+      if (daysOfTheWeek[now.dayOfTheWeek()] == myAct.dow && now.hour() == myAct.h && now.minute() == myAct.m) {
+        //Everything matched! Send the action
+        if (myAct.type == 'L')
+          sendAction(lightServerIP, myAct.par1, myAct.par2);
+        if (myAct.type == 'S')
+          sendAction(shadeServerIP, myAct.par1, myAct.par2);
+     }  
+     //go to next action
+     addr += 6;
+     myAct = {char(EEPROM.read(addr)), int(EEPROM.read(addr+1)), int(EEPROM.read(addr+2)), char(EEPROM.read(addr+3)), int(EEPROM.read(addr+4)), int(EEPROM.read(addr+5))};
    }
-   
 }
 
 void handleRoot() {
