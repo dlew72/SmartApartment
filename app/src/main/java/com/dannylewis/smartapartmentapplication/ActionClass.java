@@ -2,7 +2,7 @@ package com.dannylewis.smartapartmentapplication;
 
 public class ActionClass {
 
-    private char weekday; //N M T W R F A X
+    private char weekday; //U M T W R F A X
     private short hour; //0 -- 23
     private short minute; // 0 -- 59
     private char actionType; //S or L
@@ -20,7 +20,7 @@ public class ActionClass {
 
     public String convertActionToString() {
         //SAMPLE
-        // N0930L050100
+        // U0930L050100
         String actionString = "";
         actionString += weekday;
         if (hour < 10)

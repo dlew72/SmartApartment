@@ -5,11 +5,18 @@
 #include <ESP8266LLMNR.h>
 #include <ESP8266WebServer.h>   // Include the WebServer library
 #include <EEPROM.h>
+#include "RTClib.h"
 
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
 
 //EEPROM Address index
 int addr = 0;
+
+//Recently sent scheduled actions (based on addr)
+int addrList[10];
+
+//RTC
+RTC_DS3231 rtc;
 
 //setup or operation flag
 bool operationMode = false;
@@ -54,6 +61,9 @@ void setup()
   Serial.begin(115200);
   Serial.println("Fresh Run");
   EEPROM.begin(1024);
+
+  //wipe addrList
+  wipeAddrList();
 
   //set pinmodes
   pinMode(greenLEDpin, OUTPUT);
@@ -101,6 +111,26 @@ void loop()
   else
     digitalWrite(greenLEDpin, LOW);
 
+  checkSchedule();
+
+}
+
+void wipeAddrList() {
+  for (int i = 0; i < 10; i++)
+    addrList[i] = -1;
+}
+
+void checkSchedule() {
+
+   DateTime now = rtc.now();
+   
+   char DOW = EEPROM.read(129);
+   while (DOW != 'X') {
+    //Check day of week, then hour, then minute
+    //If all match, send action and add action addr to recent list
+    if (DOW == 
+   }
+   
 }
 
 void handleRoot() {
