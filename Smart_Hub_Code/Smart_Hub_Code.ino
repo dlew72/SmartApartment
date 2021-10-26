@@ -62,6 +62,9 @@ void wipeEEPROM();
 void shareCredentials(String, String);
 bool checkSchedValid();
 void checkSchedule(DateTime);
+int getLightState();
+int getShadeState();
+int getLightSensorBrightness();
 
 //Interrupt
 ICACHE_RAM_ATTR void resetButtonPressed();
@@ -241,8 +244,6 @@ void handleCredentials() {
         Serial.println("RESETTING...");
         resetFunc();
       }
-      
- 
 }
 
 void handleNotFound(){
@@ -454,7 +455,67 @@ void connectToSavedNetwork() {
 }
 
 void handleGetState() {
+  Serial.println("Handling GET STATE");
   //App requests current device values to initialize sliders on dashboard
+
+  int lightState = getLightState();
+  int shadeState = getShadeState();
+  int sensorState = getLightSensorBrightness();
+
+  //respond
+  
+  
+}
+
+int getLightState() {
+  WiFiClient cli;
+  HTTPClient http;
+  int httpResponseCode;
+
+  http.begin(cli, lightServerIP + "getState");
+
+  http.addHeader("Content-Type", "text/plain");
+
+  httpResponseCode = http.GET();      
+  Serial.print("HTTP Response code: ");
+  Serial.println(httpResponseCode);
+  //IF RESPONSE CODE == SUCCESS, UPDATE MEMORY ADDRs AND RETURN THAT VAL
+  //SOMEHOW GET VALUE
+  //T O D O
+
+
+
+
+
+  //T O D O
+  http.end();
+}
+
+int getShadeState() {
+  WiFiClient cli;
+  HTTPClient http;
+  int httpResponseCode;
+
+  http.begin(cli, shadeServerIP + "getState");
+
+  http.addHeader("Content-Type", "text/plain");
+
+  httpResponseCode = http.GET();      
+  Serial.print("HTTP Response code: ");
+  Serial.println(httpResponseCode);
+  //IF RESPONSE CODE == SUCCESS, UPDATE MEMORY ADDRs AND RETURN THAT VAL
+  //SOMEHOW GET VALUE
+  //T O D O
+
+
+
+
+
+  //T O D O
+  http.end();
+}
+
+int getLightSensorBrightness() {
   
 }
 
