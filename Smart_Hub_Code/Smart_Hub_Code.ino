@@ -6,6 +6,11 @@
 #include <ESP8266WebServer.h>   // Include the WebServer library
 #include <EEPROM.h>
 #include "RTClib.h"
+#include <Wire.h>
+//#include <BH1750.h>
+
+
+//BH1750 lightMeter;
 
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
 
@@ -62,8 +67,8 @@ void wipeEEPROM();
 void shareCredentials(String, String);
 bool checkSchedValid();
 void checkSchedule(DateTime);
-int getLightState();
-int getShadeState();
+String getLightState();
+String getShadeState();
 int getLightSensorBrightness();
 
 //Interrupt
@@ -75,10 +80,12 @@ void(* resetFunc) (void) = 0;
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(19200);
   Serial.println("Fresh Run");
   EEPROM.begin(1024);
+  Wire.begin(14, 2);
   rtc.begin();
+
 
 
   //set pinmodes
@@ -88,7 +95,16 @@ void setup()
 
   //set up interrupt
   attachInterrupt(digitalPinToInterrupt(hardResetButton), resetButtonPressed, RISING);
+
+  /*Light sensor setup
   
+     if (lightMeter.begin()) {
+    Serial.println(F("BH1750 initialised"));
+  }
+  else {
+    Serial.println(F("Error initialising BH1750"));
+  }
+  */
 
   //set power indicator on
   digitalWrite(redLEDpin, HIGH);
@@ -108,6 +124,7 @@ void setup()
   //HTTP handlers
   server.on("/", handleRoot);                      // Call the 'handleRoot' function when a client requests URI "/"
   server.on("/credentials", handleCredentials);    // Call the 'handleCredentials' function when a client requests URI "/credentials"
+  server.on("/getStates", handleGetState);
   server.on("/schedule", handleSchedule);       // Call the 'handleSchedule' function when a client requests URI "/schedule"
   server.on("/action", handleAction);         // Call the 'handleAction' function when a client requests URI "/action"
   server.onNotFound(handleNotFound);        // When a client requests an unknown URI (i.e. something other than "/"), call function "handleNotFound"
@@ -129,9 +146,21 @@ void loop()
     
   DateTime now = rtc.now();
   if (prevMin != now.minute()) {
+    Serial.print("Prevmin:");
+    Serial.println(prevMin);
+    Serial.print("nowmin:");
+    Serial.println(now.minute());
     prevMin = now.minute();
     checkSchedule(now);
   }
+
+  /*Serial.print("Minute");
+  Serial.println(now.minute());
+  Serial.print("hour");
+  Serial.println(now.hour());
+
+    Serial.print("day");
+  Serial.println(now.day());*/
 }
 
 
@@ -142,18 +171,44 @@ bool checkSchedValid() {
   return false;
 }
 
-void checkSchedule(DateTime now) {
+void printAction(action a) {
+  Serial.println("ACTION ==========");
+  Serial.println(a.dow);
+  Serial.println(a.h);
+  Serial.println(a.m);
+  Serial.println(a.type);
+  Serial.println(a.par1);
+  Serial.println(a.par2);
+}
 
-   if (!checkSchedValid())
+void checkSchedule(DateTime now) {
+  Serial.println("Checking Schedule...");
+
+   if (!checkSchedValid()) {
+    Serial.println("SCHEDULE NOT VALID...");
+    
     return;
+
+   }
+   else {
+    Serial.println("Schedule Valid!!");
+   }
         
    addr = 129;
    action myAct = {char(EEPROM.read(addr)), int(EEPROM.read(addr+1)), int(EEPROM.read(addr+2)), char(EEPROM.read(addr+3)), int(EEPROM.read(addr+4)), int(EEPROM.read(addr+5))};
-      
+      printAction(myAct);
    while (myAct.dow != 'X') {
       //Check day of week, then hour, then minute
       //If all match, send action and add action addr to recent list
-      if (daysOfTheWeek[now.dayOfTheWeek()] == myAct.dow && now.hour() == myAct.h && now.minute() == myAct.m) {
+      Serial.println("Day Of Week:");
+      Serial.println(daysOfTheWeek[now.dayOfTheWeek()]);
+      Serial.println("Hour:");
+      Serial.println(now.hour());
+      Serial.println("minute:");
+      Serial.println(now.minute());
+      
+      if (daysOfTheWeek[now.dayOfTheWeek()] == myAct.dow && now.hour() == myAct.h+1 && now.minute() == myAct.m) {
+        Serial.println("SENDING ACTION!");
         //Everything matched! Send the action
         if (myAct.type == 'L')
           sendAction(lightServerIP, myAct.par1, myAct.par2);
@@ -458,16 +513,22 @@ void handleGetState() {
   Serial.println("Handling GET STATE");
   //App requests current device values to initialize sliders on dashboard
 
-  int lightState = getLightState();
-  int shadeState = getShadeState();
-  int sensorState = getLightSensorBrightness();
+  String lightState = getLightState();
+  String shadeState = getShadeState();
+  
+  Serial.print("We are where we think we are");
+  //float lux = lightMeter.readLightLevel();
+  //Serial.print("Light: ");
+  //Serial.print(lux);
 
   //respond
-  
+  String states = "L:" + String(lightState) + "S:" + String(shadeState);
+  server.send(200, "text/plain", states);
+
   
 }
 
-int getLightState() {
+String getLightState() {
   WiFiClient cli;
   HTTPClient http;
   int httpResponseCode;
@@ -484,14 +545,16 @@ int getLightState() {
   //T O D O
 
 
-
+  String message = server.arg("plain");
 
 
   //T O D O
   http.end();
+
+  return message;
 }
 
-int getShadeState() {
+String getShadeState() {
   WiFiClient cli;
   HTTPClient http;
   int httpResponseCode;
@@ -507,16 +570,19 @@ int getShadeState() {
   //SOMEHOW GET VALUE
   //T O D O
 
-
+  String message = server.arg("plain");
+  
 
 
 
   //T O D O
   http.end();
+
+  return message;
 }
 
 int getLightSensorBrightness() {
-  
+
 }
 
 void shareCredentials(String ssid, String pass) {

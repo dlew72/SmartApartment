@@ -8,16 +8,21 @@
 
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
 
+//Current position, can be from 0 (fully open) --> 2000 (fully closed)
+int curPos = 0;
+
 //EEPROM Address index
 int addr = 0;
+
+//Motor pins
+int Step = 0; //GPIO0---D3 of Nodemcu--Step of stepper motor driver
+int Dir  = 2; //GPIO2---D4 of Nodemcu--Direction of stepper motor driver
 
 //setup or operation flag
 bool operationMode = false;
 
 //pin assignments
 int greenLEDpin = 12;
-int out2pin = 4;
-int out1pin = 5;
 int redLEDpin = 13;
 int hardResetButton = 15;
 
@@ -52,9 +57,12 @@ void setup()
   //set pinmodes
   pinMode(greenLEDpin, OUTPUT);
   pinMode(redLEDpin, OUTPUT);
-  pinMode(out1pin, OUTPUT);
-  pinMode(out2pin, OUTPUT);
   pinMode(hardResetButton, INPUT);
+
+ pinMode(Step, OUTPUT); //Step pin as output
+ pinMode(Dir,  OUTPUT); //Direcction pin as output
+ digitalWrite(Step, LOW); // Currently no stepper motor movement
+ digitalWrite(Dir, LOW);  
 
   //set up interrupt
   attachInterrupt(digitalPinToInterrupt(hardResetButton), resetButtonPressed, RISING);
@@ -63,10 +71,13 @@ void setup()
   //set power indicator on
   digitalWrite(redLEDpin, HIGH);
 
-  analogWriteRange(255);
 
-  analogWriteFreq(150);
 
+  if (EEPROM.read(128) >= 0 && EEPROM.read(128) <= 2000 ) { curPos = EEPROM.read(128); }
+  else {
+    EEPROM.put(128, 0);
+    EEPROM.commit();
+  }
 
   //check if setup byte is set
   if (EEPROM.read(0) == char(7)) {
@@ -85,6 +96,7 @@ void setup()
   //HTTP handlers
   server.on("/", handleRoot);                      // Call the 'handleRoot' function when a client requests URI "/"
   server.on("/credentials", handleCredentials);    // Call the 'handleCredentials' function when a client requests URI "/credentials"
+  server.on("/getState", handleGetState);      
   server.on("/action", handleAction);         // Call the 'handleAction' function when a client requests URI "/action"
   server.onNotFound(handleNotFound);        // When a client requests an unknown URI (i.e. something other than "/"), call function "handleNotFound"
 
@@ -304,14 +316,29 @@ void handleAction(){
       Serial.println("MESSAGE:");
       Serial.println(message);
             
-      Serial.println("pos:");
+      Serial.println("pos from app:");
       Serial.println(pos);
 
-      Serial.println("out1:");
-      Serial.println(pos/100.0*255);
+      pos = pos*20; //scale to 0-2000
+
+
+      if (pos == curPos) { /*do nothing*/ }
+      else if (pos < curPos) {
+        while (pos < curPos) {
+            reverse();
+        }
+      }
+      else if (pos > curPos) {
+
+        while (pos > curPos) {
+            forward();
+        }
+      }
+
+      
 
     
-     analogWrite(out1pin, pos/100.0*255);
+     
     
 }
 
@@ -319,4 +346,48 @@ ICACHE_RAM_ATTR void resetButtonPressed() {
     Serial.println("WIPING EEPROM");
     wipeEEPROM();
     resetFunc();
+}
+
+void forward() {
+   digitalWrite(Dir, HIGH); //Rotate stepper motor in clock wise direction
+          for( int i=1;i<=20;i++){
+          digitalWrite(Step, HIGH);
+          delay(10);
+          digitalWrite(Step, LOW);
+          delay(10);
+         }
+   curPos+=20;
+   writePos(curPos);
+}
+
+void reverse() {
+   digitalWrite(Dir, LOW); //Rotate stepper motor in clock wise direction
+          for( int i=1;i<=20;i++){
+          digitalWrite(Step, HIGH);
+          delay(10);
+          digitalWrite(Step, LOW);
+          delay(10);
+         }
+     curPos-=20;
+     writePos(curPos);
+     
+}
+
+void writePos(int p) {
+
+  addr = 128;
+  if (p < 0) {
+    p = 0;
+    curPos = 0;
+  }
+  EEPROM.put(addr, p);
+  EEPROM.commit();
+  
+}
+
+void handleGetState() {
+    Serial.println("ACTION DETECTED");
+    
+    server.send(200, "text/plain", String(curPos));
+  
 }

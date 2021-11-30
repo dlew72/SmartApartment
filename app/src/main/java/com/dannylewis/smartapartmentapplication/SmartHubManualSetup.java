@@ -25,8 +25,11 @@ public class SmartHubManualSetup extends AppCompatActivity {
             Intent intent = new Intent(this, SmartHubConnectedActivity.class);
             startActivity(intent);
         }
-        else
-            Toast.makeText(SmartHubManualSetup.this, "Error... Check WiFi Network", Toast.LENGTH_SHORT).show();
+        else {
+            //Toast.makeText(SmartHubManualSetup.this, "Error... Check WiFi Network", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SmartHubManualSetup.this, wifiManager.getConnectionInfo().getSSID(), Toast.LENGTH_SHORT).show();
+
+        }
 
     }
 

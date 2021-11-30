@@ -11,6 +11,10 @@ ESP8266WebServer server(80);    // Create a webserver object that listens for HT
 //EEPROM Address index
 int addr = 0;
 
+//State values
+int b_g = 0;
+int w_g = 0;
+
 //setup or operation flag
 bool operationMode = false;
 
@@ -61,6 +65,18 @@ void setup()
   analogWriteFreq(150);
 
 
+  //set state variables
+  if (EEPROM.read(128) < 0 || EEPROM.read(128) > 100)
+    b_g = 0;
+  else
+    b_g = EEPROM.read(128);
+
+  if (EEPROM.read(164) < 0 || EEPROM.read(164) > 100)
+    w_g = 0;
+  else
+    w_g = EEPROM.read(164);
+
+
   //check if setup byte is set
   if (EEPROM.read(0) == char(7)) {
     Serial.println("7 BIT SET");
@@ -77,6 +93,7 @@ void setup()
 
   //HTTP handlers
   server.on("/", handleRoot);                      // Call the 'handleRoot' function when a client requests URI "/"
+  server.on("/getState", handleGetState);      
   server.on("/credentials", handleCredentials);    // Call the 'handleCredentials' function when a client requests URI "/credentials"
   server.on("/action", handleAction);         // Call the 'handleAction' function when a client requests URI "/action"
   server.onNotFound(handleNotFound);        // When a client requests an unknown URI (i.e. something other than "/"), call function "handleNotFound"
@@ -316,7 +333,7 @@ void handleAction(){
      int brightness = message.substring(1, message.indexOf('$')).toInt();
      int warmth = message.substring(message.indexOf('$')+1).toInt();
 
-      Serial.println("MESSAGE:");
+      /*Serial.println("MESSAGE:");
       Serial.println(message);
             
       Serial.println("bright:");
@@ -329,9 +346,28 @@ void handleAction(){
       Serial.println(brightness/100.0*255);
 
       Serial.println("out2:");
-      Serial.println(warmth/100.0*255);
+      Serial.println(warmth/100.0*255); */
     
      analogWrite(out1pin, brightness/100.0*255);
      analogWrite(out2pin, warmth/100.0*255);
+     writeState(brightness, warmth);
     
+}
+
+void writeState(int b, int w) {
+  b_g = b;
+  w_g = w;
+
+  EEPROM.put(128, b);
+  EEPROM.put(164, w);
+  EEPROM.commit();
+}
+
+void handleGetState() {
+    Serial.println("getting state");
+
+    String state = "B" + String(b_g) + "#W" + String(w_g) + "$";
+    
+    server.send(200, "text/plain", state);
+  
 }

@@ -227,14 +227,14 @@ public class DashboardActivity extends AppCompatActivity {
                     tempP = curPos;
                 }
 
-                if (Math.abs(tempP -curPos) > 20) {
+                /*if (Math.abs(tempP -curPos) > 20) {
                     tempP = curPos;
                     try {
                         changeShadePosition(curPos);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -254,6 +254,24 @@ public class DashboardActivity extends AppCompatActivity {
                 }, 300);
             }
         });
+
+        try {
+            getStates();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+       /* new Timer().scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                try {
+                    Log.d("BRIGHTNESSTAG", "Trying to get brightnes...");
+                    getBrightness();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },0,5000);*/
 
 
     }
@@ -302,7 +320,8 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     void setLux(int xx) {
-        readOut.setText(xx + " lux");
+        readOut.setText("----");
+        //readOut.setText(xx + " lux");
     }
 
     void changeBrightness(short newValue) throws JSONException {
@@ -411,4 +430,125 @@ public class DashboardActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
+
+    void getStates() throws JSONException {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url ="http://192.168.0.177"; //hardcoded hub ip
+
+        JSONObject jsonBody = new JSONObject();
+        jsonBody.put("b###", "states");
+        final String requestBody = jsonBody.toString();
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url+"/getStates",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("VOLLEY1", response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("VOLLEY", error.toString());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String responseString = "";
+                if (response != null) {
+                    responseString = String.valueOf(response.statusCode);
+                    if (responseString.equals("200")) {
+
+                        Log.d("states", String.valueOf(response.data));
+
+                        /*brightSeek.setProgress(brightness);
+                        warmthSeek.setProgress(warmth);
+                        shadeSeek.setProgress(pos);*/
+
+                    }
+                }
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            }
+        };
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+
+    }
+
+
+
+
+
+    /*void getBrightness() throws JSONException {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url ="http://192.168.0.177"; //hardcoded hub ip
+
+        JSONObject jsonBody = new JSONObject();
+        jsonBody.put("b###", "brightness");
+        final String requestBody = jsonBody.toString();
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url+"/brightness",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("VOLLEY", response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("VOLLEY", error.toString());
+            }
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String responseString = "";
+                if (response != null) {
+                    responseString = String.valueOf(response.statusCode);
+                    if (responseString.equals("200")) {
+
+
+                    }
+                }
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            }
+        };
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }*/
 }
