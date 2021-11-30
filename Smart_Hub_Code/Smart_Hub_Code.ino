@@ -540,15 +540,13 @@ String getLightState() {
   httpResponseCode = http.GET();      
   Serial.print("HTTP Response code: ");
   Serial.println(httpResponseCode);
-  //IF RESPONSE CODE == SUCCESS, UPDATE MEMORY ADDRs AND RETURN THAT VAL
-  //SOMEHOW GET VALUE
-  //T O D O
 
 
-  String message = server.arg("plain");
+  String message = http.getString();
 
+  Serial.println("MESSAGE:");
+  Serial.println(message);
 
-  //T O D O
   http.end();
 
   return message;
@@ -566,16 +564,10 @@ String getShadeState() {
   httpResponseCode = http.GET();      
   Serial.print("HTTP Response code: ");
   Serial.println(httpResponseCode);
-  //IF RESPONSE CODE == SUCCESS, UPDATE MEMORY ADDRs AND RETURN THAT VAL
-  //SOMEHOW GET VALUE
-  //T O D O
-
-  String message = server.arg("plain");
+  
+  String message = http.getString();
   
 
-
-
-  //T O D O
   http.end();
 
   return message;

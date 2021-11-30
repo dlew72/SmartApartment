@@ -437,46 +437,33 @@ public class DashboardActivity extends AppCompatActivity {
 
         String url ="http://192.168.0.177"; //hardcoded hub ip
 
-        JSONObject jsonBody = new JSONObject();
-        jsonBody.put("b###", "states");
-        final String requestBody = jsonBody.toString();
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url+"/getStates",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("VOLLEY1", response);
+                        Log.i("VOLLEY1", "Response:" + response);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
+                Log.e("VOLLEY1", "error:" + error.toString());
             }
         }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
 
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
-            }
 
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 String responseString = "";
                 if (response != null) {
+
                     responseString = String.valueOf(response.statusCode);
+                    Log.d("volley1", "responseString:" + responseString);
+
                     if (responseString.equals("200")) {
 
-                        Log.d("states", String.valueOf(response.data));
+                        Log.d("volley1", "response.data:" + String.valueOf(response.data));
 
                         /*brightSeek.setProgress(brightness);
                         warmthSeek.setProgress(warmth);
@@ -488,8 +475,9 @@ public class DashboardActivity extends AppCompatActivity {
             }
         };
         // Add the request to the RequestQueue.
-        queue.add(stringRequest);
 
+        queue.add(stringRequest);
+        Log.d("volley1", "stringRequest to add:" + stringRequest.toString());
 
     }
 

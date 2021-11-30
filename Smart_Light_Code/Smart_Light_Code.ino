@@ -348,8 +348,8 @@ void handleAction(){
       Serial.println("out2:");
       Serial.println(warmth/100.0*255); */
     
-     analogWrite(out1pin, brightness/100.0*255);
-     analogWrite(out2pin, warmth/100.0*255);
+     analogWrite(out1pin, (brightness/100.0)*(1-warmth/100.0)*255); //b*(100 - w)
+     analogWrite(out2pin, (brightness/100.0)*(warmth/100.0)*255); // b*w
      writeState(brightness, warmth);
     
 }
@@ -367,6 +367,9 @@ void handleGetState() {
     Serial.println("getting state");
 
     String state = "B" + String(b_g) + "#W" + String(w_g) + "$";
+
+    Serial.println("returning state::::");
+    Serial.println(state);
     
     server.send(200, "text/plain", state);
   
