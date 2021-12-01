@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -463,11 +464,19 @@ public class DashboardActivity extends AppCompatActivity {
 
                     if (responseString.equals("200")) {
 
-                        Log.d("volley1", "response.data:" + String.valueOf(response.data));
+                        Log.d("volley1", "response.data:" + response.data);
+                        String s = new String(response.data, StandardCharsets.UTF_8);
+                        Log.d("volley1", "response.dataCONVERT: " + s);
+                        String brightness = s.substring(3, s.indexOf("#W"));
+                        String warmth = s.substring(s.indexOf("#W") + 2, s.indexOf("$S"));
+                        String pos = s.substring(s.indexOf("S:") + 2);
+                        Log.d("volley1", "brightness: " + brightness);
+                        Log.d("volley1", "warmth: " + warmth);
+                        Log.d("volley1", "pos: " + pos);
 
-                        /*brightSeek.setProgress(brightness);
-                        warmthSeek.setProgress(warmth);
-                        shadeSeek.setProgress(pos);*/
+                        brightSeek.setProgress(Integer.parseInt(brightness));
+                        warmthSeek.setProgress(Integer.parseInt(warmth));
+                        shadeSeek.setProgress(Integer.parseInt(pos)/20);
 
                     }
                 }

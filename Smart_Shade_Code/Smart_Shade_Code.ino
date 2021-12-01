@@ -321,18 +321,15 @@ void handleAction(){
 
       pos = pos*20; //scale to 0-2000
 
+      int delta = pos - curPos;
+
 
       if (pos == curPos) { /*do nothing*/ }
-      else if (pos < curPos) {
-        while (pos < curPos) {
-            reverse();
-        }
+      else if (delta < 0) {
+        reverse(delta);
       }
-      else if (pos > curPos) {
-
-        while (pos > curPos) {
-            forward();
-        }
+      else if (delta > 0) {
+        forward(delta);
       }
 
       
@@ -348,29 +345,37 @@ ICACHE_RAM_ATTR void resetButtonPressed() {
     resetFunc();
 }
 
-void forward() {
+void forward(int delta) {
+   curPos+=delta/2;
+   writePos(curPos);
+   
    digitalWrite(Dir, HIGH); //Rotate stepper motor in clock wise direction
-          for( int i=1;i<=20;i++){
-          digitalWrite(Step, HIGH);
-          delay(10);
-          digitalWrite(Step, LOW);
-          delay(10);
-         }
-   curPos+=20;
+   
+   for( int i=0; i<delta; i++){
+      digitalWrite(Step, HIGH);
+      delay(10);
+      digitalWrite(Step, LOW);
+      delay(10);
+   }
+   
+   curPos+=delta/2;
    writePos(curPos);
 }
 
-void reverse() {
+void reverse(int delta) {
+   curPos+=delta/2;
+   writePos(curPos);
+   
    digitalWrite(Dir, LOW); //Rotate stepper motor in clock wise direction
-          for( int i=1;i<=20;i++){
+          for( int i=0; i<delta*-1; i++){
           digitalWrite(Step, HIGH);
           delay(10);
           digitalWrite(Step, LOW);
           delay(10);
          }
-     curPos-=20;
+         
+     curPos+=delta/2;
      writePos(curPos);
-     
 }
 
 void writePos(int p) {
