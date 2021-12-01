@@ -7,10 +7,10 @@
 #include <EEPROM.h>
 #include "RTClib.h"
 #include <Wire.h>
-//#include <BH1750.h>
+#include <BH1750.h>
 
 
-//BH1750 lightMeter;
+BH1750 lightMeter;
 
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
 
@@ -69,7 +69,7 @@ bool checkSchedValid();
 void checkSchedule(DateTime);
 String getLightState();
 String getShadeState();
-int getLightSensorBrightness();
+void handleBrightness();
 
 //Interrupt
 ICACHE_RAM_ATTR void resetButtonPressed();
@@ -85,6 +85,7 @@ void setup()
   EEPROM.begin(1024);
   Wire.begin(14, 2);
   rtc.begin();
+
 
 
 
@@ -125,6 +126,7 @@ void setup()
   server.on("/", handleRoot);                      // Call the 'handleRoot' function when a client requests URI "/"
   server.on("/credentials", handleCredentials);    // Call the 'handleCredentials' function when a client requests URI "/credentials"
   server.on("/getStates", handleGetState);
+  server.on("/brightness", handleBrightness);
   server.on("/schedule", handleSchedule);       // Call the 'handleSchedule' function when a client requests URI "/schedule"
   server.on("/action", handleAction);         // Call the 'handleAction' function when a client requests URI "/action"
   server.onNotFound(handleNotFound);        // When a client requests an unknown URI (i.e. something other than "/"), call function "handleNotFound"
@@ -143,7 +145,10 @@ void loop()
     digitalWrite(greenLEDpin, HIGH);
   else
     digitalWrite(greenLEDpin, LOW);
-    
+
+
+  Wire.begin(14, 2);
+  rtc.begin();
   DateTime now = rtc.now();
   if (prevMin != now.minute()) {
     Serial.print("Prevmin:");
@@ -154,13 +159,21 @@ void loop()
     checkSchedule(now);
   }
 
-  /*Serial.print("Minute");
-  Serial.println(now.minute());
-  Serial.print("hour");
-  Serial.println(now.hour());
+  /*Serial.print(now.year(), DEC);
+    Serial.print('/');
+    Serial.print(now.month(), DEC);
+    Serial.print('/');
+    Serial.print(now.day(), DEC);
+    Serial.print(" (");
+    Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+    Serial.print(") ");
+    Serial.print(now.hour(), DEC);
+    Serial.print(':');
+    Serial.print(now.minute(), DEC);
+    Serial.print(':');
+    Serial.print(now.second(), DEC);
+    Serial.println(); */
 
-    Serial.print("day");
-  Serial.println(now.day());*/
 }
 
 
@@ -516,10 +529,7 @@ void handleGetState() {
   String lightState = getLightState();
   String shadeState = getShadeState();
   
-  Serial.print("We are where we think we are");
-  //float lux = lightMeter.readLightLevel();
-  //Serial.print("Light: ");
-  //Serial.print(lux);
+
 
   //respond
   String states = "L:" + String(lightState) + "S:" + String(shadeState);
@@ -573,8 +583,16 @@ String getShadeState() {
   return message;
 }
 
-int getLightSensorBrightness() {
+void handleBrightness() {
+  Wire.begin(4, 5);
+  delay(1);
+  lightMeter.begin();
+  Serial.print("We are where we think we are");
+  float lux = lightMeter.readLightLevel();
+  Serial.print("Light: ");
+  Serial.print(lux);
 
+  server.send(200, "text/plain", String(lux));
 }
 
 void shareCredentials(String ssid, String pass) {

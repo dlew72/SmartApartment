@@ -157,6 +157,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:background="#03A9F4"
+        android:clickable="true"
+        android:onClick="startBrightness"
         android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
