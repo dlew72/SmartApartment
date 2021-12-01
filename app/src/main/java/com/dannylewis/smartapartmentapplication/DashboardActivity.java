@@ -46,6 +46,7 @@ public class DashboardActivity extends AppCompatActivity {
     private int tempW = 0;
     private int tempB = 0;
     private int tempP = 0;
+    private boolean brightnessStarted = false;
 
     private int minBright = 0;
     private int maxBright = 100;
@@ -68,6 +69,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         SharedPreferences sP = getSharedPreferences("ACTIONS", Context.MODE_PRIVATE);
         ScheduleSyncHelper myHelper = new ScheduleSyncHelper(sP, this);
+
+        brightnessStarted = false;
 
         try {
             myHelper.syncSchedule();
@@ -113,12 +116,10 @@ public class DashboardActivity extends AppCompatActivity {
         //Initialize dynamic components on screen from HUB VALUES
         {
             //Light
-            //TODO: lights
             lightOpac.setAlpha(0);
 
             //Shade
             updateShadeImage(0, setDashWin);
-            //TODO: shade
 
             //Readout
             setLux(0);
@@ -262,20 +263,11 @@ public class DashboardActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-       /* new Timer().scheduleAtFixedRate(new TimerTask(){
-            @Override
-            public void run(){
-                try {
-                    Log.d("BRIGHTNESSTAG", "Trying to get brightnes...");
-                    getBrightness();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        },0,5000);*/
+
 
 
     }
+
 
     private void updateShadeImage(int progressChangedValue, ImageView i) {
         if (progressChangedValue < 13) {
@@ -321,8 +313,8 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     void setLux(int xx) {
-        readOut.setText("----");
-        //readOut.setText(xx + " lux");
+        //readOut.setText("----");
+        readOut.setText(xx + " lux");
     }
 
     void changeBrightness(short newValue) throws JSONException {
@@ -444,7 +436,6 @@ public class DashboardActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("VOLLEY1", "Response:" + response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -460,19 +451,14 @@ public class DashboardActivity extends AppCompatActivity {
                 if (response != null) {
 
                     responseString = String.valueOf(response.statusCode);
-                    Log.d("volley1", "responseString:" + responseString);
 
                     if (responseString.equals("200")) {
 
-                        Log.d("volley1", "response.data:" + response.data);
                         String s = new String(response.data, StandardCharsets.UTF_8);
-                        Log.d("volley1", "response.dataCONVERT: " + s);
                         String brightness = s.substring(3, s.indexOf("#W"));
                         String warmth = s.substring(s.indexOf("#W") + 2, s.indexOf("$S"));
                         String pos = s.substring(s.indexOf("S:") + 2);
-                        Log.d("volley1", "brightness: " + brightness);
-                        Log.d("volley1", "warmth: " + warmth);
-                        Log.d("volley1", "pos: " + pos);
+
 
                         brightSeek.setProgress(Integer.parseInt(brightness));
                         warmthSeek.setProgress(Integer.parseInt(warmth));
@@ -494,50 +480,51 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
-    /*void getBrightness() throws JSONException {
+    void getBrightness() throws JSONException {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
         String url ="http://192.168.0.177"; //hardcoded hub ip
 
-        JSONObject jsonBody = new JSONObject();
-        jsonBody.put("b###", "brightness");
-        final String requestBody = jsonBody.toString();
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url+"/brightness",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("VOLLEY", response);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
+                Log.e("VOLLEY1", "error:" + error.toString());
             }
         }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
 
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return requestBody == null ? null : requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
-            }
 
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 String responseString = "";
                 if (response != null) {
+
                     responseString = String.valueOf(response.statusCode);
+
                     if (responseString.equals("200")) {
+
+                        String s = new String(response.data, StandardCharsets.UTF_8);
+                        float raw = Float.parseFloat(s);
+                        int roomLight = (int)(raw);
+
+                        Log.d("volley1", "roomlight:" + roomLight);
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                setLux(roomLight);
+                                //readOut.setText(roomLight + " lux");
+
+                            }
+                        });
+
 
 
                     }
@@ -546,6 +533,27 @@ public class DashboardActivity extends AppCompatActivity {
             }
         };
         // Add the request to the RequestQueue.
+
         queue.add(stringRequest);
-    }*/
+        Log.d("volley1", "stringRequest to add:" + stringRequest.toString());
+
+    }
+
+    public void startBrightness(View view) {
+        if (!brightnessStarted) {
+            brightnessStarted = true;
+
+            new Timer().scheduleAtFixedRate(new TimerTask(){
+                @Override
+                public void run(){
+                    try {
+                        Log.d("BRIGHTNESSTAG", "Trying to get brightnes...");
+                        getBrightness();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            },500,1500);
+        }
+    }
 }
