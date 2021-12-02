@@ -46,7 +46,6 @@ public class DashboardActivity extends AppCompatActivity {
     private int tempW = 0;
     private int tempB = 0;
     private int tempP = 0;
-    private boolean brightnessStarted = false;
 
     private int minBright = 0;
     private int maxBright = 100;
@@ -69,8 +68,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         SharedPreferences sP = getSharedPreferences("ACTIONS", Context.MODE_PRIVATE);
         ScheduleSyncHelper myHelper = new ScheduleSyncHelper(sP, this);
-
-        brightnessStarted = false;
 
         try {
             myHelper.syncSchedule();
@@ -540,20 +537,11 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void startBrightness(View view) {
-        if (!brightnessStarted) {
-            brightnessStarted = true;
-
-            new Timer().scheduleAtFixedRate(new TimerTask(){
-                @Override
-                public void run(){
                     try {
                         Log.d("BRIGHTNESSTAG", "Trying to get brightnes...");
                         getBrightness();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-            },500,1500);
-        }
     }
 }
