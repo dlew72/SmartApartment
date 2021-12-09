@@ -47,7 +47,6 @@ ICACHE_RAM_ATTR void resetButtonPressed();
 // software reset function
 void(* resetFunc) (void) = 0;
 
-
 void setup()
 {
   Serial.begin(115200);
@@ -70,8 +69,6 @@ void setup()
 
   //set power indicator on
   digitalWrite(redLEDpin, HIGH);
-
-
 
   if (EEPROM.read(128) >= 0 && EEPROM.read(128) <= 2000 ) { curPos = EEPROM.read(128); }
   else {
@@ -104,7 +101,6 @@ void setup()
   server.begin();                           
   Serial.println("HTTP server started");
 }
-
 
 void loop()
 {
@@ -200,8 +196,6 @@ void handleCredentials() {
         Serial.println("RESETTING...");
         resetFunc();
       }
-      
- 
 }
 
 void handleNotFound(){
@@ -331,12 +325,6 @@ void handleAction(){
       else if (delta > 0) {
         forward(delta);
       }
-
-      
-
-    
-     
-    
 }
 
 ICACHE_RAM_ATTR void resetButtonPressed() {
@@ -379,7 +367,6 @@ void reverse(int delta) {
 }
 
 void writePos(int p) {
-
   addr = 128;
   if (p < 0) {
     p = 0;
@@ -394,5 +381,4 @@ void handleGetState() {
     Serial.println("ACTION DETECTED");
     
     server.send(200, "text/plain", String(curPos));
-  
 }

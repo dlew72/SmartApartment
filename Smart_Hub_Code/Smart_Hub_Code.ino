@@ -9,7 +9,6 @@
 #include <Wire.h>
 #include <BH1750.h>
 
-
 BH1750 lightMeter;
 
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
@@ -57,7 +56,7 @@ void handleNotFound();
 void handleSchedule();
 void handleAction();
 void handleGetState();
-
+void handleBrightness();
 
 // misc function prototypes
 void hubSetupMode();
@@ -77,7 +76,6 @@ ICACHE_RAM_ATTR void resetButtonPressed();
 // software reset function
 void(* resetFunc) (void) = 0;
 
-
 void setup()
 {
   Serial.begin(19200);
@@ -85,9 +83,6 @@ void setup()
   EEPROM.begin(1024);
   Wire.begin(14, 2);
   rtc.begin();
-
-
-
 
   //set pinmodes
   pinMode(greenLEDpin, OUTPUT);
@@ -97,19 +92,8 @@ void setup()
   //set up interrupt
   attachInterrupt(digitalPinToInterrupt(hardResetButton), resetButtonPressed, RISING);
 
-  /*Light sensor setup
-  
-     if (lightMeter.begin()) {
-    Serial.println(F("BH1750 initialised"));
-  }
-  else {
-    Serial.println(F("Error initialising BH1750"));
-  }
-  */
-
   //set power indicator on
   digitalWrite(redLEDpin, HIGH);
-
 
   //check if setup byte is set
   if (EEPROM.read(0) == char(7)) {
@@ -136,7 +120,6 @@ void setup()
   Serial.println("HTTP server started");
 }
 
-
 void loop()
 {
   server.handleClient();
@@ -145,7 +128,6 @@ void loop()
     digitalWrite(greenLEDpin, HIGH);
   else
     digitalWrite(greenLEDpin, LOW);
-
 
   Wire.begin(14, 2);
   rtc.begin();
@@ -158,22 +140,6 @@ void loop()
     prevMin = now.minute();
     checkSchedule(now);
   }
-
-  /*Serial.print(now.year(), DEC);
-    Serial.print('/');
-    Serial.print(now.month(), DEC);
-    Serial.print('/');
-    Serial.print(now.day(), DEC);
-    Serial.print(" (");
-    Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
-    Serial.print(") ");
-    Serial.print(now.hour(), DEC);
-    Serial.print(':');
-    Serial.print(now.minute(), DEC);
-    Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.println(); */
-
 }
 
 
@@ -184,24 +150,12 @@ bool checkSchedValid() {
   return false;
 }
 
-void printAction(action a) {
-  Serial.println("ACTION ==========");
-  Serial.println(a.dow);
-  Serial.println(a.h);
-  Serial.println(a.m);
-  Serial.println(a.type);
-  Serial.println(a.par1);
-  Serial.println(a.par2);
-}
-
 void checkSchedule(DateTime now) {
   Serial.println("Checking Schedule...");
 
    if (!checkSchedValid()) {
     Serial.println("SCHEDULE NOT VALID...");
-    
     return;
-
    }
    else {
     Serial.println("Schedule Valid!!");
@@ -209,17 +163,9 @@ void checkSchedule(DateTime now) {
         
    addr = 129;
    action myAct = {char(EEPROM.read(addr)), int(EEPROM.read(addr+1)), int(EEPROM.read(addr+2)), char(EEPROM.read(addr+3)), int(EEPROM.read(addr+4)), int(EEPROM.read(addr+5))};
-      printAction(myAct);
    while (myAct.dow != 'X') {
       //Check day of week, then hour, then minute
       //If all match, send action and add action addr to recent list
-      Serial.println("Day Of Week:");
-      Serial.println(daysOfTheWeek[now.dayOfTheWeek()]);
-      Serial.println("Hour:");
-      Serial.println(now.hour());
-      Serial.println("minute:");
-      Serial.println(now.minute());
-      
       if (daysOfTheWeek[now.dayOfTheWeek()] == myAct.dow && now.hour() == myAct.h+1 && now.minute() == myAct.m) {
         Serial.println("SENDING ACTION!");
         //Everything matched! Send the action
@@ -333,11 +279,6 @@ void handleSchedule() {
 
     message = message.substring(13, message.length()-2);
 
-
-    Serial.println("MESSAGE:");
-    Serial.println(message);
-
-
     int numberSchedules = message.length()/12;
 
 //"M0830L100000X"
@@ -386,8 +327,7 @@ void handleSchedule() {
       addr++;
     }
     EEPROM.commit();
-
-    readEEPROM();
+    //readEEPROM();
 }
 
 void handleAction(){
@@ -447,7 +387,6 @@ void sendAction(String ip, int p1, int p2) {
 }
 
 void wipeEEPROM() {
-
   EEPROM.write(0, char(0));
   EEPROM.commit();
 }
@@ -515,10 +454,8 @@ void connectToSavedNetwork() {
     while (WiFi.status() != WL_CONNECTED) {
       //While we aren't connected, flash red indicator light 
         digitalWrite(redLEDpin, !digitalRead(redLEDpin));
-
         delay(500);
     }
-
     //Now we are connected to the saved AP.
 }
 
@@ -529,13 +466,9 @@ void handleGetState() {
   String lightState = getLightState();
   String shadeState = getShadeState();
   
-
-
   //respond
   String states = "L:" + String(lightState) + "S:" + String(shadeState);
   server.send(200, "text/plain", states);
-
-  
 }
 
 String getLightState() {
@@ -550,7 +483,6 @@ String getLightState() {
   httpResponseCode = http.GET();      
   Serial.print("HTTP Response code: ");
   Serial.println(httpResponseCode);
-
 
   String message = http.getString();
 
@@ -577,7 +509,6 @@ String getShadeState() {
   
   String message = http.getString();
   
-
   http.end();
 
   return message;
@@ -622,8 +553,6 @@ void shareCredentials(String ssid, String pass) {
   Serial.println(httpResponseCode);
 
   http.end();
-
-   
 }
 
 ICACHE_RAM_ATTR void resetButtonPressed() {
