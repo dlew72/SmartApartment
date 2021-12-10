@@ -40,6 +40,9 @@ void connectToSavedNetwork();
 void readEEPROM();
 void wipeEEPROM();
 
+//Interrupt	
+ICACHE_RAM_ATTR void resetButtonPressed();	
+
 // software reset function
 void(* resetFunc) (void) = 0;
 
@@ -56,6 +59,9 @@ void setup()
   pinMode(out1pin, OUTPUT);
   pinMode(out2pin, OUTPUT);
   pinMode(hardResetButton, INPUT);
+  
+  //set up interrupt	
+  attachInterrupt(digitalPinToInterrupt(hardResetButton), resetButtonPressed, RISING);
 
   //set power indicator on
   digitalWrite(redLEDpin, HIGH);
@@ -110,12 +116,6 @@ void loop()
     digitalWrite(greenLEDpin, HIGH);
   else
     digitalWrite(greenLEDpin, LOW);
-
-  if (digitalRead(hardResetButton) == HIGH) {
-    Serial.println("WIPING EEPROM");
-    wipeEEPROM();
-    resetFunc();
-  }
 }
 
 void handleRoot() {
@@ -244,13 +244,6 @@ void lightSetupMode() {
     //While we aren't connected to hub, flash red indicator light
     digitalWrite(redLEDpin, !digitalRead(redLEDpin));
 
-    //Check to see if hard reset button is pressed
-    if (digitalRead(hardResetButton) == HIGH) {
-      Serial.println("WIPING EEPROM");
-      wipeEEPROM();
-      resetFunc();
-    }
-
     delay(500);
   }
   Serial.println("we are connected to hub");
@@ -296,12 +289,6 @@ void connectToSavedNetwork() {
     //While we aren't connected, flash green indicator light
     digitalWrite(greenLEDpin, !digitalRead(greenLEDpin));
 
-    //Check to see if hard reset button is pressed
-    if (digitalRead(hardResetButton) == HIGH) {
-      Serial.println("WIPING EEPROM");
-      wipeEEPROM();
-      resetFunc();
-    }
     delay(500);
   }
   //Now we are connected to the saved AP.
@@ -347,4 +334,10 @@ void handleGetState() {
     Serial.println(state);
     
     server.send(200, "text/plain", state);
+}
+
+	ICACHE_RAM_ATTR void resetButtonPressed() {	
+    Serial.println("WIPING EEPROM");	
+    wipeEEPROM();	
+    resetFunc();	
 }
