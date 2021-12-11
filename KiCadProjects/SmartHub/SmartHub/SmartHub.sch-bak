@@ -1,0 +1,223 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title "Smart Apartment - Hub"
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SmartApartment:HUZZAH u1
+U 1 1 6185A9D4
+P 5550 4200
+F 0 "u1" H 5550 4600 50  0001 C CNN
+F 1 "HUZZAH" H 5550 4823 50  0000 C CNN
+F 2 "SharedLib:HUZZAH_FOOT" H 5550 4824 50  0001 C CNN
+F 3 "" H 5450 4100 50  0001 C CNN
+	1    5550 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 6185B03D
+P 4900 4400
+F 0 "R3" V 5000 4350 50  0000 C CNN
+F 1 "R" V 5000 4450 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4830 4400 50  0001 C CNN
+F 3 "~" H 4900 4400 50  0001 C CNN
+	1    4900 4400
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 6185CAE6
+P 4900 4300
+F 0 "R2" V 4800 4250 50  0000 C CNN
+F 1 "R" V 4800 4350 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4830 4300 50  0001 C CNN
+F 3 "~" H 4900 4300 50  0001 C CNN
+	1    4900 4300
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED D1
+U 1 1 6185CE07
+P 4500 4200
+F 0 "D1" H 4493 4417 50  0000 C CNN
+F 1 "LED" H 4493 4326 50  0000 C CNN
+F 2 "LED_THT:LED_D2.0mm_W4.8mm_H2.5mm_FlatTop" H 4500 4200 50  0001 C CNN
+F 3 "~" H 4500 4200 50  0001 C CNN
+	1    4500 4200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED D2
+U 1 1 6185DB2A
+P 4500 4500
+F 0 "D2" H 4500 4300 50  0000 C CNN
+F 1 "LED" H 4500 4400 50  0000 C CNN
+F 2 "LED_THT:LED_D2.0mm_W4.8mm_H2.5mm_FlatTop" H 4500 4500 50  0001 C CNN
+F 3 "~" H 4500 4500 50  0001 C CNN
+	1    4500 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR01
+U 1 1 6185EB0C
+P 4350 4850
+F 0 "#PWR01" H 4350 4600 50  0001 C CNN
+F 1 "GND" H 4355 4677 50  0000 C CNN
+F 2 "" H 4350 4850 50  0001 C CNN
+F 3 "" H 4350 4850 50  0001 C CNN
+	1    4350 4850
+	1    0    0    -1  
+$EndComp
+$Comp
+L SmartApartment:DS3231 U1
+U 1 1 61867CD8
+P 6600 3600
+F 0 "U1" H 6550 3950 50  0001 C CNN
+F 1 "DS3231" V 6500 3500 50  0000 L CNN
+F 2 "SharedLib:DS3231_FOOT" H 6650 3650 50  0001 C CNN
+F 3 "" H 6650 3650 50  0001 C CNN
+	1    6600 3600
+	0    1    1    0   
+$EndComp
+$Comp
+L SmartApartment:BH1750 U2
+U 1 1 61868332
+P 6800 4450
+F 0 "U2" H 6800 4750 50  0001 C CNN
+F 1 "BH1750" V 7000 4200 50  0000 L CNN
+F 2 "SharedLib:BH1750_BO_FOOT" H 6850 4550 50  0001 C CNN
+F 3 "" H 6850 4550 50  0001 C CNN
+	1    6800 4450
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 6186DAD6
+P 6100 4850
+F 0 "R1" V 6000 4800 50  0000 C CNN
+F 1 "R" V 6000 4900 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 6030 4850 50  0001 C CNN
+F 3 "~" H 6100 4850 50  0001 C CNN
+	1    6100 4850
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	5950 4000 6750 4000
+Wire Wire Line
+	6750 4000 6750 3900
+Connection ~ 6750 4000
+Wire Wire Line
+	6950 3900 6950 4150
+Connection ~ 6950 4150
+Wire Wire Line
+	5950 4100 6650 4100
+Wire Wire Line
+	6650 4100 6650 3900
+Connection ~ 6650 4100
+Wire Wire Line
+	6100 4150 6100 4500
+Wire Wire Line
+	6100 4500 5950 4500
+Wire Wire Line
+	6100 4150 6950 4150
+Wire Wire Line
+	6650 4100 6650 4250
+Wire Wire Line
+	6850 3900 6850 4200
+Wire Wire Line
+	6750 4000 6750 4250
+Wire Wire Line
+	6950 4150 6950 4250
+Wire Wire Line
+	6000 4700 6000 4550
+Wire Wire Line
+	6000 4550 6150 4550
+Wire Wire Line
+	6150 4550 6150 4200
+Wire Wire Line
+	6150 4200 6550 4200
+Connection ~ 6850 4200
+Wire Wire Line
+	6850 4200 6850 4250
+Wire Wire Line
+	5950 4400 6250 4400
+Wire Wire Line
+	6000 4700 6100 4700
+Wire Wire Line
+	6000 4700 5950 4700
+Connection ~ 6000 4700
+Wire Wire Line
+	6550 4250 6550 4200
+Connection ~ 6550 4200
+Wire Wire Line
+	6550 4200 6850 4200
+Wire Wire Line
+	6100 5000 6100 5100
+Wire Wire Line
+	6100 5100 6250 5100
+Wire Wire Line
+	6100 4500 6400 4500
+Wire Wire Line
+	6400 4500 6400 4700
+Connection ~ 6100 4500
+Connection ~ 6250 5100
+Wire Wire Line
+	6250 5100 6400 5100
+Wire Wire Line
+	6250 4400 6250 5100
+$Comp
+L Switch:SW_Push SW1
+U 1 1 6185F122
+P 6400 4900
+F 0 "SW1" H 6500 5000 50  0000 C CNN
+F 1 "SW_Push" H 6400 4850 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Horizontal" H 6400 5100 50  0001 C CNN
+F 3 "~" H 6400 5100 50  0001 C CNN
+	1    6400 4900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5150 4400 5050 4400
+Wire Wire Line
+	5150 4300 5050 4300
+Wire Wire Line
+	4750 4300 4750 4200
+Wire Wire Line
+	4750 4200 4650 4200
+Wire Wire Line
+	4750 4400 4750 4500
+Wire Wire Line
+	4750 4500 4650 4500
+Wire Wire Line
+	4350 4200 4350 4500
+Connection ~ 4350 4500
+Wire Wire Line
+	4350 4500 4350 4700
+Wire Wire Line
+	5150 4700 4350 4700
+Connection ~ 4350 4700
+Wire Wire Line
+	4350 4700 4350 4850
+$Comp
+L power:GND #PWR?
+U 1 1 61890A0E
+P 6000 4700
+F 0 "#PWR?" H 6000 4450 50  0001 C CNN
+F 1 "GND" H 6005 4527 50  0000 C CNN
+F 2 "" H 6000 4700 50  0001 C CNN
+F 3 "" H 6000 4700 50  0001 C CNN
+	1    6000 4700
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC

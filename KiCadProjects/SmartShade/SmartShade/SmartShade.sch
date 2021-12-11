@@ -1,0 +1,313 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SmartApartment:HUZZAH u1
+U 1 1 618AAA37
+P 5900 3900
+F 0 "u1" H 5900 4300 50  0001 C CNN
+F 1 "HUZZAH" H 5900 4523 50  0000 C CNN
+F 2 "SharedLib:HUZZAH_FOOT" H 5800 3800 50  0001 C CNN
+F 3 "" H 5800 3800 50  0001 C CNN
+	1    5900 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 618AB6A9
+P 5000 3950
+F 0 "R1" V 4900 3850 50  0000 C CNN
+F 1 "R" V 4900 4050 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P20.32mm_Horizontal" V 4930 3950 50  0001 C CNN
+F 3 "~" H 5000 3950 50  0001 C CNN
+	1    5000 3950
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 618ABD6F
+P 5000 4150
+F 0 "R2" V 5100 4050 50  0000 C CNN
+F 1 "R" V 5100 4200 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P20.32mm_Horizontal" V 4930 4150 50  0001 C CNN
+F 3 "~" H 5000 4150 50  0001 C CNN
+	1    5000 4150
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:LED D1
+U 1 1 618AC522
+P 4450 3950
+F 0 "D1" H 4400 4050 50  0000 C CNN
+F 1 "LED" H 4550 4050 50  0000 C CNN
+F 2 "LED_THT:LED_D1.8mm_W3.3mm_H2.4mm" H 4450 3950 50  0001 C CNN
+F 3 "~" H 4450 3950 50  0001 C CNN
+	1    4450 3950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED D2
+U 1 1 618AD134
+P 4450 4150
+F 0 "D2" H 4400 4000 50  0000 C CNN
+F 1 "LED" H 4550 4000 50  0000 C CNN
+F 2 "LED_THT:LED_D1.8mm_W3.3mm_H2.4mm" H 4450 4150 50  0001 C CNN
+F 3 "~" H 4450 4150 50  0001 C CNN
+	1    4450 4150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW1
+U 1 1 618AD8F0
+P 6750 4350
+F 0 "SW1" H 6750 4543 50  0000 C CNN
+F 1 "SW_Push" H 6750 4544 50  0001 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" H 6750 4550 50  0001 C CNN
+F 3 "~" H 6750 4550 50  0001 C CNN
+	1    6750 4350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 618AE0FF
+P 7100 4250
+F 0 "R3" V 7000 4150 50  0000 C CNN
+F 1 "R" V 7000 4350 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P20.32mm_Horizontal" V 7030 4250 50  0001 C CNN
+F 3 "~" H 7100 4250 50  0001 C CNN
+	1    7100 4250
+	-1   0    0    1   
+$EndComp
+$Comp
+L SmartApartment:A4988 U1
+U 1 1 618B2FF0
+P 7150 3450
+F 0 "U1" H 7150 3000 50  0001 C CNN
+F 1 "A4988" H 7150 3973 50  0000 C CNN
+F 2 "SharedLib:a4988_foot" H 7150 3700 50  0001 C CNN
+F 3 "" H 7150 3700 50  0001 C CNN
+	1    7150 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5150 4150 5350 4150
+Wire Wire Line
+	5350 4150 5350 4100
+Wire Wire Line
+	5350 4100 5500 4100
+Wire Wire Line
+	5500 4000 5350 4000
+Wire Wire Line
+	5350 4000 5350 3950
+Wire Wire Line
+	5350 3950 5150 3950
+Wire Wire Line
+	4850 4150 4600 4150
+Wire Wire Line
+	4600 3950 4850 3950
+Wire Wire Line
+	4300 3950 4300 4150
+Wire Wire Line
+	4300 4150 4300 4400
+Wire Wire Line
+	4300 4400 5500 4400
+Connection ~ 4300 4150
+Wire Wire Line
+	6300 4100 6950 4100
+Wire Wire Line
+	6300 4400 7100 4400
+Wire Wire Line
+	6300 4200 6550 4200
+Wire Wire Line
+	6950 4350 6950 4100
+Connection ~ 6950 4100
+Wire Wire Line
+	6950 4100 7100 4100
+Wire Wire Line
+	6800 3800 6800 4000
+Wire Wire Line
+	6800 4000 6300 4000
+Wire Wire Line
+	6800 3700 6700 3700
+Wire Wire Line
+	6700 3700 6700 3900
+Wire Wire Line
+	6700 3900 6300 3900
+Wire Wire Line
+	6800 3600 6800 3500
+$Comp
+L SmartApartment:Pad X2
+U 1 1 618B7DD2
+P 6500 3200
+F 0 "X2" H 6500 3100 50  0001 C CNN
+F 1 "Pad" H 6442 3077 50  0000 C CNN
+F 2 "SharedLib:Pad_FOOT" H 6500 3200 50  0001 C CNN
+F 3 "" H 6500 3200 50  0001 C CNN
+	1    6500 3200
+	-1   0    0    1   
+$EndComp
+$Comp
+L SmartApartment:Pad X3
+U 1 1 618B89CF
+P 6500 3300
+F 0 "X3" H 6500 3200 50  0001 C CNN
+F 1 "Pad" H 6442 3177 50  0000 C CNN
+F 2 "SharedLib:Pad_FOOT" H 6500 3300 50  0001 C CNN
+F 3 "" H 6500 3300 50  0001 C CNN
+	1    6500 3300
+	-1   0    0    1   
+$EndComp
+$Comp
+L SmartApartment:Pad X4
+U 1 1 618B8AC9
+P 6500 3400
+F 0 "X4" H 6500 3300 50  0001 C CNN
+F 1 "Pad" H 6442 3277 50  0000 C CNN
+F 2 "SharedLib:Pad_FOOT" H 6500 3400 50  0001 C CNN
+F 3 "" H 6500 3400 50  0001 C CNN
+	1    6500 3400
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6650 3400 6800 3400
+Wire Wire Line
+	6650 3300 6800 3300
+Wire Wire Line
+	6650 3200 6800 3200
+$Comp
+L SmartApartment:Pad X7
+U 1 1 618B9660
+P 7850 3300
+F 0 "X7" H 7850 3200 50  0001 C CNN
+F 1 "Pad" H 7928 3305 50  0000 L CNN
+F 2 "SharedLib:Pad_FOOT" H 7850 3300 50  0001 C CNN
+F 3 "" H 7850 3300 50  0001 C CNN
+	1    7850 3300
+	1    0    0    -1  
+$EndComp
+$Comp
+L SmartApartment:Pad X8
+U 1 1 618B9AEC
+P 7850 3400
+F 0 "X8" H 7850 3300 50  0001 C CNN
+F 1 "Pad" H 7928 3405 50  0000 L CNN
+F 2 "SharedLib:Pad_FOOT" H 7850 3400 50  0001 C CNN
+F 3 "" H 7850 3400 50  0001 C CNN
+	1    7850 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L SmartApartment:Pad X9
+U 1 1 618B9C31
+P 7850 3500
+F 0 "X9" H 7850 3400 50  0001 C CNN
+F 1 "Pad" H 7928 3505 50  0000 L CNN
+F 2 "SharedLib:Pad_FOOT" H 7850 3500 50  0001 C CNN
+F 3 "" H 7850 3500 50  0001 C CNN
+	1    7850 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L SmartApartment:Pad X10
+U 1 1 618B9CE2
+P 7850 3600
+F 0 "X10" H 7850 3500 50  0001 C CNN
+F 1 "Pad" H 7928 3605 50  0000 L CNN
+F 2 "SharedLib:Pad_FOOT" H 7850 3600 50  0001 C CNN
+F 3 "" H 7850 3600 50  0001 C CNN
+	1    7850 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L SmartApartment:Pad X5
+U 1 1 618B9DF2
+P 7850 2800
+F 0 "X5" H 7850 2700 50  0001 C CNN
+F 1 "Pad" H 7928 2805 50  0000 L CNN
+F 2 "SharedLib:Pad_FOOT" H 7850 2800 50  0001 C CNN
+F 3 "" H 7850 2800 50  0001 C CNN
+	1    7850 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L SmartApartment:Pad X6
+U 1 1 618B9EE7
+P 7850 3100
+F 0 "X6" H 7850 3000 50  0001 C CNN
+F 1 "Pad" H 7928 3105 50  0000 L CNN
+F 2 "SharedLib:Pad_FOOT" H 7850 3100 50  0001 C CNN
+F 3 "" H 7850 3100 50  0001 C CNN
+	1    7850 3100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7500 3300 7700 3300
+Wire Wire Line
+	7500 3400 7700 3400
+Wire Wire Line
+	7500 3500 7700 3500
+Wire Wire Line
+	7500 3600 7700 3600
+Wire Wire Line
+	7500 3200 7700 3200
+$Comp
+L Device:CP C1
+U 1 1 618BE81B
+P 7700 2950
+F 0 "C1" H 7818 2996 50  0000 L CNN
+F 1 "CP" H 7818 2905 50  0000 L CNN
+F 2 "Capacitor_THT:CP_Radial_D8.0mm_P5.00mm" H 7738 2800 50  0001 C CNN
+F 3 "~" H 7700 2950 50  0001 C CNN
+	1    7700 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7500 3100 7500 2800
+Wire Wire Line
+	7500 2800 7700 2800
+Connection ~ 7700 2800
+Wire Wire Line
+	7700 3200 7700 3100
+Connection ~ 7700 3100
+Wire Wire Line
+	7100 4400 7500 4400
+Wire Wire Line
+	7500 4400 7500 3800
+Connection ~ 7100 4400
+Wire Wire Line
+	6550 4500 7600 4500
+Wire Wire Line
+	7600 4500 7600 3700
+Wire Wire Line
+	7600 3700 7500 3700
+Wire Wire Line
+	6550 4200 6550 4350
+Connection ~ 6550 4350
+Wire Wire Line
+	6550 4350 6550 4500
+$Comp
+L SmartApartment:Pad X1
+U 1 1 618C18A5
+P 6500 3100
+F 0 "X1" H 6500 3000 50  0001 C CNN
+F 1 "Pad" H 6442 2977 50  0000 C CNN
+F 2 "SharedLib:Pad_FOOT" H 6500 3100 50  0001 C CNN
+F 3 "" H 6500 3100 50  0001 C CNN
+	1    6500 3100
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6650 3100 6800 3100
+$EndSCHEMATC
