@@ -2,7 +2,7 @@
 
 ECE Senior Design Project by Danny Lewis, George Long, Roy Thorstensen, and Olivia Kapp.
 
-Android app was built for Samsung Galaxy S10, but should function on any Android device.
+Android app was built for Samsung Galaxy S10, but should function on any Android device (Android 6.0+). Volley required.
 
 Smart_Hub_Code, Smart_Light_Code, and Smart_Shade_Code folders contain the code and guides for powering the HUZZAH boards.
 
